@@ -1,11 +1,15 @@
 package com.example.demo.Controller;
 
+import com.example.demo.DTOs.ProfileInfoDTO;
+import com.example.demo.DTOs.RegisterDTO;
 import com.example.demo.Middleware.CookieFactory;
 import com.example.demo.Middleware.Validation.JWTutils;
-import jakarta.servlet.http.Cookie;
+import com.example.demo.Service.CookieService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.Data;
+import jakarta.validation.Valid;
+import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,36 +17,31 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/cookies")
 public class CookieController
 {
+    private final CookieService cookieService;
 
-   private final int SESSION_COOKIE_MAX_AGE = 60 * 30;
-   private final int PERSISTENT_COOKIE_MAX_AGE = 60 * 60 * 24 * 30;
-
-    public static final String sessionCookieName = "sessionCookie";
-    public static final String persistentCookieName = "persistentCookie";
-
-    private final CookieFactory cookieFactory;
-
-    public CookieController(CookieFactory cookieFactory)
+    public CookieController(CookieService cookieService)
     {
-        this.cookieFactory = cookieFactory;
+        this.cookieService = cookieService;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<Void> login(@CookieValue(value = "sessionCookie", required = false) String sessionToken,
-                                @CookieValue(value = "persistentCookie", required = false) String persistentToken,
-                                HttpServletResponse response, @RequestBody String username)
+    @PostMapping("/register")
+    public ResponseEntity<ProfileInfoDTO> register(HttpServletResponse response, /*@Valid*/ @RequestBody RegisterDTO registerDTO)
     {
-        System.out.println("login");
-        if(persistentToken == null)
-        {
-            cookieFactory.addCookie(response, username, persistentCookieName, PERSISTENT_COOKIE_MAX_AGE);
-        }
+        System.out.println(registerDTO.getUsername());
+        System.out.println(registerDTO.getEmail());
+        return cookieService.registerUser(response, registerDTO);
+    }
 
-        if(sessionToken == null)
-        {
-            cookieFactory.addCookie(response, username, sessionCookieName, -1);
-        }
-
-        return ResponseEntity.ok().build();
+    @GetMapping("/login")
+    public ResponseEntity<?> login(
+            @CookieValue(value = "sessionCookie", required = false) String sessionToken,
+            @CookieValue(value = "persistentCookie", required = false) String persistentToken,
+            HttpServletRequest request,
+            HttpServletResponse response)
+    {
+        System.out.println(persistentToken);
+        System.out.println(sessionToken);
+        System.out.println(request.getCookies().length);
+        return  cookieService.loginUser(sessionToken, persistentToken, response);
     }
 }

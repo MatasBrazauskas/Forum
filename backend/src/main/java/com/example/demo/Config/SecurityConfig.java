@@ -22,7 +22,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // You should also allow your login endpoint.
                         // Make sure your login endpoint is publicly accessible.
-                        .requestMatchers(HttpMethod.POST, "/cookies/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/cookies/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/cookies/**").permitAll()
                         // All other requests require authentication
                         .anyRequest().authenticated()
                 );

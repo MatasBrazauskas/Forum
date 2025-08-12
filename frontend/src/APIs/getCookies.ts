@@ -1,26 +1,21 @@
-import { COOKIE_LOGIN } from "./const";
+import { LOGIN_REQUEST} from "./const";
 import { HTTP_CODES } from "./const";
 
-async function getCookies(username: string): Promise<void>{
-
-    console.warn('Getting cookies');
-
+async function getCookies(): Promise<void>{
     try{
-        const response = await fetch(COOKIE_LOGIN, {
-            method: 'POST',
-            body: JSON.stringify({'username' : username}),
-            headers:{
-                'Content-Type': 'application/json',
-            },
+        const response = await fetch(LOGIN_REQUEST, {
+            method: 'GET',
+            credentials: 'include'
         });
 
-        console.log(await response);
+        //const data = await response.json();
+        //console.log(data);
 
         if(response.status === HTTP_CODES.OK){
             return;
         }
     } catch (e) {
-        console.error(e);
+        console.warn(e);
     }
     throw new Error('Error with the cookies');
 }

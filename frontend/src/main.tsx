@@ -11,6 +11,8 @@ import store from './Store/store';
 import TopBar from './TopBar/TopBar';
 import Login from './Login/Login';
 
+import './mainStyle.css';
+
 const queryClient = new QueryClient({
   defaultOptions:{
     queries:{
@@ -23,7 +25,7 @@ const queryClient = new QueryClient({
 function App(){
 
     return (
-      <div>
+      <div className = 'mainContainer'>
         <TopBar />
         <Login />
       </div>
