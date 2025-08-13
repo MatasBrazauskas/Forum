@@ -1,6 +1,5 @@
 package com.example.demo.Middleware;
 
-import com.example.demo.Config.tempConst;
 import com.example.demo.Middleware.Validation.JWTutils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,40 +20,30 @@ public class CookieFactory
         this.jwtUtils = jwtUtils;
     }
 
-    public void addCookie(HttpServletResponse response, String username, tempConst.CookieNames cookieName)
+    public void addPersistentCookie(HttpServletResponse response, String username)
     {
-        if(cookieName == tempConst.CookieNames.persistentCookieName){
-            addCookie(response, username, cookieName, PERSISTENT_COOKIE_MAX_AGE);
-        }else {
-            addCookie(response, username, cookieName, SESSION_COOKIE_MAX_AGE);
-        }
+        final var token = jwtUtils.generateToken(username, PERSISTENT_COOKIE_MAX_AGE);
+        var persistentCookie = new Cookie("persistentCookie", token);
+
+        persistentCookie.setMaxAge(PERSISTENT_COOKIE_MAX_AGE);
+        persistentCookie.setPath("/");
+        persistentCookie.setHttpOnly(true);
+        persistentCookie.setDomain("localhost");
+        persistentCookie.setAttribute("SameSite", "Lax");
+
+        response.addCookie(persistentCookie);
     }
 
-    private void addCookie(HttpServletResponse response, String username, tempConst.CookieNames cookieName, int maxAge)
+    public void addSessionCookie(HttpServletResponse response, String username)
     {
-        final var token = jwtUtils.generateToken(username, maxAge);
+        final var token = jwtUtils.generateToken(username, 60 * 5);
+        var persistentCookie = new Cookie("sessionCookie", token);
 
-        String cookieHeader = String.format(
-                "sessionCookie=%s; Path=%s; Domain=%s; Max-Age=%d; HttpOnly; SameSite=Lax",
-                token,
-                "/",
-                "localhost",
-                maxAge
-        );
+        persistentCookie.setPath("/");
+        persistentCookie.setHttpOnly(true);
+        persistentCookie.setDomain("localhost");
+        persistentCookie.setAttribute("SameSite", "Lax");
 
-        //var sessionCookie = new Cookie(cookieName.getName(), token);
-
-        /*sessionCookie.setSecure(false);
-        sessionCookie.setMaxAge(maxAge);
-        sessionCookie.setHttpOnly(true);
-        sessionCookie.setPath("/");
-        sessionCookie.setDomain("localhost");
-        sessionCookie.setAttribute("SameSite", "Lax");*/
-
-        //sessionCookie.setSame("Lax");
-
-        //response.addCookie(sessionCookie);
-
-        response.addHeader("Set-Cookie", cookieHeader);
+        response.addCookie(persistentCookie);
     }
 }

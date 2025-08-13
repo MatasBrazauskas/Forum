@@ -9,7 +9,6 @@ import { Provider } from 'react-redux';
 import store from './Store/store';
 
 import TopBar from './TopBar/TopBar';
-import Login from './Login/Login';
 
 import './mainStyle.css';
 
@@ -27,7 +26,6 @@ function App(){
     return (
       <div className = 'mainContainer'>
         <TopBar />
-        <Login />
       </div>
     )
 }

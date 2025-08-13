@@ -1,0 +1,10 @@
+.top_bar_container{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.titles{
+    display: flex;
+    flex-direction: column;
+}

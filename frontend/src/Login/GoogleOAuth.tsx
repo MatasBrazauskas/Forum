@@ -15,7 +15,6 @@ function GoogleOAuth(){
     const { isError, error, mutate } = useMutation({
         mutationFn: async (e: CredentialResponse) => {
             const data: Register= jwtDecode(e.credential!);
-            console.table(data)
             await authRequest(data.name, data.email)
     }});
 

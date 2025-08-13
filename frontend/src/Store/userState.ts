@@ -10,16 +10,11 @@ const userSlice = createSlice({
     name: USER_INFO,
     initialState,
     reducers: {
-        clearUserInfo: (state: UserInformation) => {
-            state.username = 'GUEST';
-            state.role = 'GUEST';
-            state.dateOfCreation = undefined;
-            state.lastOnline = undefined;
-            state.postCount = undefined;
-            state.reputation = undefined;
+        clearUserInfo: () => {
+            return initialState;
         },
-        adduserInfo: (state: UserInformation, actions: PayloadAction<UserInformation>) => {
-            state = structuredClone(actions.payload);
+        adduserInfo: (state: UserInformation, action: PayloadAction<UserInformation>) => {
+            Object.assign(state, action.payload);
         }
     }
 })

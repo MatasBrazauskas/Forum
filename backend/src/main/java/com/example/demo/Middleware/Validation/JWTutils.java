@@ -58,18 +58,18 @@ public class JWTutils {
                 /*.setClaims(claims)*/
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public Boolean validateToken(String token) {
+    /*public Boolean validateToken(String token) {
         try {
             return !isTokenExpired(token);
         } catch (Exception e) {
             return false;
         }
-    }
+    }*/
 
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);

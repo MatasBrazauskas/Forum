@@ -1,32 +1,55 @@
-/*import Forums from "./Forums";
+import Forums from "./Forums";
 import Rules from "./Rules";
-import Profile from "./Profile";*/
+import Profile from "./Profile";
+import Inbox from "./Inbox";
+import Search from "./Search";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 
 import type { RootState } from "../Store/store";
-import getCookies from "../APIs/getCookies";
+import loginRequest from "../APIs/loginRequest";
+import { adduserInfo } from "../Store/userState";
+
+import './style.css';
+import Login from "../Login/Login";
 
 function TopBar() {
 
-    const tempObj = useSelector((state: RootState) => state.USER_INFO);
+    const userInfo = useSelector((state: RootState) => state.USER_INFO);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const APIcall = async () => {
-            getCookies();
+            const data = await loginRequest();
+            
+            if(data !== null){
+                dispatch(adduserInfo(data));
+            }
         }
 
         APIcall();
-    }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
-        <div>
-            <div>{tempObj?.username}</div>
-            {/*}
-            <Forums />
-            <Rules />
-            <Profile />*/}
+        <div className = 'top_bar_container'>
+            <div>
+                <Forums />
+                <Rules />
+            </div>
+            
+            {userInfo.role !== 'GUEST' ?
+            <div className = 'titles'>
+                <Profile />
+                <Inbox />
+                <Search />
+            </div>
+            :
+            <div className = 'titles'>
+                <Login />
+            </div>
+            }
         </div>
     )
 }

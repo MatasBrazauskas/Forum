@@ -1,6 +1,5 @@
 package com.example.demo.Service;
 
-import com.example.demo.Config.tempConst;
 import com.example.demo.DTOs.ProfileInfoDTO;
 import com.example.demo.DTOs.RegisterDTO;
 import com.example.demo.Entities.UserProfile;
@@ -10,8 +9,6 @@ import com.example.demo.Repository.UserProfileRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
-import org.springframework.cglib.core.Local;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -41,14 +38,12 @@ public class CookieService
 
         if(user == null)
         {
-            var date = LocalDate.now();
             user = new UserProfile(registerDTO.getUsername(), registerDTO.getEmail(), LocalDate.now(), LocalDate.now(), 0, 0, UserProfile.Role.USER);
             userProfileRepo.save(user);
 
         }
-        cookieFactory.addCookie(response, registerDTO.getUsername(), tempConst.CookieNames.persistentCookieName);
-
-        cookieFactory.addCookie(response,registerDTO.getUsername(), tempConst.CookieNames.sessionCookieName);
+        cookieFactory.addPersistentCookie(response, registerDTO.getUsername());
+        cookieFactory.addSessionCookie(response, registerDTO.getUsername());
 
         return ResponseEntity.ok(mapper.map(user, ProfileInfoDTO.class));
     }
@@ -56,17 +51,20 @@ public class CookieService
     @Transactional
     public ResponseEntity<?> loginUser(String sessionToken, String persistentToken, HttpServletResponse response)
     {
-        if(persistentToken != null && sessionToken == null)
+        if(persistentToken == null)
+        {
+            return new  ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        else
         {
             final var username = jWTutils.extractName(persistentToken);
-            final var user =  userProfileRepo.findByUsername(username);
 
-            if(user != null)
-            {
-                return ResponseEntity.ok(mapper.map(user, ProfileInfoDTO.class));
+            if(sessionToken == null){
+                cookieFactory.addSessionCookie(response, username);
             }
-        }
 
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            final var user =  userProfileRepo.findByUsername(username);
+            return ResponseEntity.ok(mapper.map(user, ProfileInfoDTO.class));
+        }
     }
 }

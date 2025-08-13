@@ -36,12 +36,11 @@ public class CookieController
     public ResponseEntity<?> login(
             @CookieValue(value = "sessionCookie", required = false) String sessionToken,
             @CookieValue(value = "persistentCookie", required = false) String persistentToken,
-            HttpServletRequest request,
             HttpServletResponse response)
     {
         System.out.println(persistentToken);
         System.out.println(sessionToken);
-        System.out.println(request.getCookies().length);
+
         return  cookieService.loginUser(sessionToken, persistentToken, response);
     }
 }

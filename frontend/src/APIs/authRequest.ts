@@ -13,7 +13,6 @@ async function authRequest(username: string, email: string){
         })
 
         const data: UserInformation = await response.json();
-        console.log(data);
 
         if(response.status === HTTP_CODES.OK){
             return data;
