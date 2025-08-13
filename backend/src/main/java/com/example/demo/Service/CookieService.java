@@ -42,6 +42,7 @@ public class CookieService
             userProfileRepo.save(user);
 
         }
+
         cookieFactory.addPersistentCookie(response, registerDTO.getUsername());
         cookieFactory.addSessionCookie(response, registerDTO.getUsername());
 

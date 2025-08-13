@@ -1,23 +1,27 @@
-import Forums from "./Forums";
-import Rules from "./Rules";
-import Profile from "./Profile";
-import Inbox from "./Inbox";
-import Search from "./Search";
-
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import LogInMonad from "../Login/LogInMonad";
+import ProfileModal from "../Profile/ProfileModal";
+import SearchModal from "../Search/SearchMonad";
 
 import type { RootState } from "../Store/store";
 import loginRequest from "../APIs/loginRequest";
 import { adduserInfo } from "../Store/userState";
 
 import './style.css';
-import Login from "../Login/Login";
 
 function TopBar() {
 
     const userInfo = useSelector((state: RootState) => state.USER_INFO);
+    const navigator = useNavigate();
     const dispatch = useDispatch();
+
+    const [profile, setProfile] = useState(false);
+    const [login, setLogin] = useState(false);
+    const [search, setSearch] = useState(false);
+
 
     useEffect(() => {
         const APIcall = async () => {
@@ -29,27 +33,35 @@ function TopBar() {
         }
 
         APIcall();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
         <div className = 'top_bar_container'>
-            <div>
-                <Forums />
-                <Rules />
+            <div className = 'left titles'>
+                <div onClick={() => navigator('forum')}>Forum</div>
+                <div onClick={() => navigator('rules')}>Rules</div>
             </div>
-            
-            {userInfo.role !== 'GUEST' ?
-            <div className = 'titles'>
-                <Profile />
-                <Inbox />
-                <Search />
+            <div className = 'right'> 
+                {userInfo.role !== 'GUEST' ?
+                <div className = 'titles'>
+                    <div onClick={() => setProfile(true)}>Profile</div>
+                    <ProfileModal show={profile} onHide={() => setProfile(false)}/>
+                </div>
+                :
+
+                <div className = 'titles'>
+                    <div onClick={() => setLogin(true)}>Login</div>
+                    <LogInMonad show={login} onHide={() => setLogin(false)} />
+                </div>
+                }
+
+
+                <div onClick={() => setSearch(true)}>Search</div>
+                <SearchModal
+                    show={search}
+                    onHide={() => setSearch(false)}
+                />
             </div>
-            :
-            <div className = 'titles'>
-                <Login />
-            </div>
-            }
         </div>
     )
 }
