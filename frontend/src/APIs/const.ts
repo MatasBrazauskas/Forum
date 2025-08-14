@@ -1,9 +1,25 @@
 const COOKIE_CONTROLLER_URL:string = import.meta.env.VITE_COOKIE_CONTROLLER;
+const TOPICS_CONTROLLER_URL:string = import.meta.env.VITE_TOPICS_CONTROLLER;
 
 export const REGISTER_REQUEST = `${COOKIE_CONTROLLER_URL}/register`;
 export const LOGIN_REQUEST = `${COOKIE_CONTROLLER_URL}/login`;
+export const TOPICS_REQUEST = `${TOPICS_CONTROLLER_URL}`;
 
 export enum HTTP_CODES {
     OK = 200,
     UNAUTHORIZED = 401,
+}
+
+export enum TOPICS {
+    INFORMATION,
+    TOPICS,
+}
+
+export type TopicsInfo = {
+    username: string
+    created:string,
+    description: string
+    threadCount: number
+    postCount: number
+    topicType: TOPICS,
 }

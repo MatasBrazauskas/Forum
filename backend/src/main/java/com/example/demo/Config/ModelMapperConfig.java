@@ -1,6 +1,8 @@
 package com.example.demo.Config;
 
 import com.example.demo.DTOs.ProfileInfoDTO;
+import com.example.demo.DTOs.TopicsDTO;
+import com.example.demo.Entities.Topics;
 import com.example.demo.Entities.UserProfile;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -24,6 +26,14 @@ public class ModelMapperConfig
                 .addMapping(user -> user.getLastOnline(), ProfileInfoDTO::setLastOnline)
                 .addMapping(user -> user.getPostCount(), ProfileInfoDTO::setPostCount)
                 .addMapping(user -> user.getReputation(), ProfileInfoDTO::setReputation);
+
+        modelMapper.createTypeMap(Topics.class, TopicsDTO.class)
+                .addMapping(tp -> tp.getCreator().getUsername(), TopicsDTO::setUsername)
+                .addMapping(tp -> tp.getCreated(), TopicsDTO::setCreated)
+                .addMapping(tp -> tp.getDescription(), TopicsDTO::setDescription)
+                .addMapping(tp -> tp.getThreadCount(), TopicsDTO::setThreadCount)
+                .addMapping(tp -> tp.getPostCount(), TopicsDTO::setPostCount)
+                .addMapping(topicType -> topicType.toString(), TopicsDTO::setTopicType);
 
         return modelMapper;
     }

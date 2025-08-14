@@ -1,0 +1,6 @@
+.dropDown{
+    display: flex;
+    align-items: center;
+    padding-left: 50px;
+    width: 1200px;
+}

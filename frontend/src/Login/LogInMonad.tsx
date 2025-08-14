@@ -3,6 +3,7 @@ import FacebookOAuth from "./FacebookOAuth";
 import TwitterOAuth from "./TwitterOAuth";
 
 import { Modal } from "react-bootstrap";
+import './loginModelStyle.css';
 
 function LogInMonad(props: any) {
 
@@ -14,11 +15,9 @@ function LogInMonad(props: any) {
         centered
         >
         <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-vcenter">
-                Users Profile
-            </Modal.Title>
+            <Modal.Title id="contained-modal-title-vcenter">Log in</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className='modalBody'>
             <GoogleOAuth />
             <FacebookOAuth />
             <TwitterOAuth />

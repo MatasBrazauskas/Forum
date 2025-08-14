@@ -7,17 +7,21 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Comments;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
-@Table(name = "users")
+@Table(name = "users", indexes = {@Index(unique = true, name="index_username", columnList = "username")})
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserProfile {
 
-    public UserProfile(@NotEmpty @Max(32) String username, @NotEmpty @Email @Max(255) String email, LocalDate date, LocalDate date1, int i, int i1, Role role)
+    public UserProfile(String username, String email, LocalDate date, LocalDate date1, int i, int i1, Role role)
     {
         this.username = username;
         this.email = email;
@@ -41,7 +45,7 @@ public class UserProfile {
     @Column(name = "username", nullable = false, columnDefinition = "VARCHAR(32)", unique = true)
     private String username;
 
-    @Column(name = "email", nullable = false, columnDefinition = "NVARCHAR(255)", unique = true)
+    @Column(name = "email", nullable = false, columnDefinition = "NVARCHAR(256)", unique = true)
     private String email;
 
     @Column(name = "date_of_creation", nullable = false, columnDefinition = "DATE")
@@ -59,4 +63,16 @@ public class UserProfile {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, columnDefinition = "ENUM('ADMIN', 'USER', 'GUEST')")
     private Role role;
+
+    @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @BatchSize(size = 20)
+    private List<Topics> topics = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userProfile",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @BatchSize(size = 20)
+    private List<Thread> threads = new ArrayList<>();
+
+    @OneToMany(mappedBy = "commentatorProfile",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @BatchSize(size = 20)
+    private List<Comment> comments = new ArrayList<>();
 }

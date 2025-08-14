@@ -44,7 +44,7 @@ function TopBar() {
             <div className = 'right'> 
                 {userInfo.role !== 'GUEST' ?
                 <div className = 'titles'>
-                    <div onClick={() => setProfile(true)}>Profile</div>
+                    <div onClick={() => setProfile(true)}>{userInfo.username}</div>
                     <ProfileModal show={profile} onHide={() => setProfile(false)}/>
                 </div>
                 :
