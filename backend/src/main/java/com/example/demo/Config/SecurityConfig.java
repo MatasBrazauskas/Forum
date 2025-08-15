@@ -32,8 +32,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/cookies/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/cookies/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/topics/admin").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/cookies").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/topics").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/topics").permitAll()
                         .anyRequest().authenticated()
                 )

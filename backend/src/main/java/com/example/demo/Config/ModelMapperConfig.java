@@ -34,7 +34,7 @@ public class ModelMapperConfig
                 .addMapping(tp -> tp.getDescription(), TopicsDTO::setDescription)
                 .addMapping(tp -> tp.getThreadCount(), TopicsDTO::setThreadCount)
                 .addMapping(tp -> tp.getPostCount(), TopicsDTO::setPostCount)
-                .addMapping(topicType -> topicType.toString(), TopicsDTO::setTopicType);
+                .addMapping(tp -> tp.getTopicType(), TopicsDTO::setTopicType);
 
         return modelMapper;
     }

@@ -12,6 +12,4 @@ public class TopicsService
     public TopicsService(TopicsRepository topicsRepository) {
         this.topicsRepository = topicsRepository;
     }
-
-    public
 }

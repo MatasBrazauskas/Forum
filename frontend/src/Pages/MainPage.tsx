@@ -4,6 +4,7 @@ import DropDownComponent from "../Components/DropDownComponent";
 
 //TEMP
 import { TOPICS_REQUEST } from "../APIs/const";
+import AddTopicComponent from "../Components/AddTopicComponent";
 
 function MainPage(){
 
@@ -37,6 +38,8 @@ function MainPage(){
 
             <button onClick={() => unprotectedAPI()}>Call unprotected API</button>
             <button onClick={() => protectedAPI()}>Call protected API</button>
+
+            <AddTopicComponent/>
 
             <Outlet />
         </div>

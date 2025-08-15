@@ -18,7 +18,7 @@ public class Topics
 {
     public enum TOPIC_TYPE {
         INFORMATION,
-        TOPICS,
+        GENERAL,
     }
 
     @Id

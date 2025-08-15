@@ -12,6 +12,8 @@ async function addTopic(addTopic: AddTopicsDTO){
             credentials: 'include'
         });
 
+        console.log(response);
+
         if(response.status === HTTP_CODES.OK){
             console.warn("Everythink is ok with addiction of topic");
         }
