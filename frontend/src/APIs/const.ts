@@ -16,10 +16,17 @@ export enum TOPICS {
 }
 
 export type TopicsInfo = {
+    topicsName: string,
     username: string
     created:string,
     description: string
     threadCount: number
     postCount: number
     topicType: TOPICS,
+}
+
+export type AddTopicsDTO = {
+    topicsName: string,
+    description: string,
+    topicsType: TOPICS,
 }

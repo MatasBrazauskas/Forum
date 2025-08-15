@@ -1,6 +1,5 @@
 package com.example.demo.Middleware;
 
-import com.example.demo.Middleware.Validation.JWTutils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
@@ -20,9 +19,9 @@ public class CookieFactory
         this.jwtUtils = jwtUtils;
     }
 
-    public void addPersistentCookie(HttpServletResponse response, String username)
+    public void addPersistentCookie(HttpServletResponse response, String username, String role)
     {
-        final var token = jwtUtils.generateToken(username, PERSISTENT_COOKIE_MAX_AGE);
+        final var token = jwtUtils.generateToken(username, PERSISTENT_COOKIE_MAX_AGE, role);
         var persistentCookie = new Cookie("persistentCookie", token);
 
         persistentCookie.setMaxAge(PERSISTENT_COOKIE_MAX_AGE);
@@ -34,9 +33,9 @@ public class CookieFactory
         response.addCookie(persistentCookie);
     }
 
-    public void addSessionCookie(HttpServletResponse response, String username)
+    public void addSessionCookie(HttpServletResponse response, String username, String role)
     {
-        final var token = jwtUtils.generateToken(username, 60 * 5);
+        final var token = jwtUtils.generateToken(username, 60 * 5, role);
         var persistentCookie = new Cookie("sessionCookie", token);
 
         persistentCookie.setPath("/");

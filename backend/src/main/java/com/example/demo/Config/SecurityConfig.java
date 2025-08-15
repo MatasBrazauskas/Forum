@@ -1,32 +1,45 @@
 package com.example.demo.Config;
 
+import com.example.demo.Middleware.JWTfilter;
+import com.example.demo.Middleware.JWTutils;
+import com.example.demo.Middleware.RateLimiterFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
+@EnableMethodSecurity// Ensures @PreAuthorize works
 public class SecurityConfig {
 
+    private final JWTfilter jwtFilter; // Inject your custom filter here
+
+    // Constructor to inject the custom filter
+    public SecurityConfig() {
+        this.jwtFilter= new JWTfilter(new JWTutils());
+    }
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+    public SecurityFilterChain filterChain(HttpSecurity http, RateLimiterFilter rateLimiterFilter) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        // Allow OPTIONS requests to pass through without authentication.
-                        // This is the key line to fix your 401 preflight issue.
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        // You should also allow your login endpoint.
-                        // Make sure your login endpoint is publicly accessible.
                         .requestMatchers(HttpMethod.POST, "/cookies/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/cookies/**").permitAll()
-                        // All other requests require authentication
+                        .requestMatchers(HttpMethod.GET, "/topics/admin").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/topics").permitAll()
                         .anyRequest().authenticated()
-                );
+                )
+                .addFilterBefore(rateLimiterFilter,  UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }

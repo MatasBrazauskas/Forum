@@ -28,6 +28,7 @@ public class ModelMapperConfig
                 .addMapping(user -> user.getReputation(), ProfileInfoDTO::setReputation);
 
         modelMapper.createTypeMap(Topics.class, TopicsDTO.class)
+                .addMapping(tp -> tp.getTopicsName(), TopicsDTO::setTopicsName)
                 .addMapping(tp -> tp.getCreator().getUsername(), TopicsDTO::setUsername)
                 .addMapping(tp -> tp.getCreated(), TopicsDTO::setCreated)
                 .addMapping(tp -> tp.getDescription(), TopicsDTO::setDescription)

@@ -3,4 +3,6 @@
     align-items: center;
     padding-left: 50px;
     width: 1200px;
+    background-color: #273c75;
+    gap: 10px;
 }

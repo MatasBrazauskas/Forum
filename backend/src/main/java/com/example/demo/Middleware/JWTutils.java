@@ -1,4 +1,4 @@
-package com.example.demo.Middleware.Validation;
+package com.example.demo.Middleware;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -13,6 +13,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
 @Component
@@ -22,8 +23,16 @@ public class JWTutils {
     @Value("${jwt.secret}")
     private String SECRET_KEY;
 
-    public String extractName(String token) {
+    public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    public String extractRole(String token) {
+        return (String)extractClaim(token, claims -> claims.get("role").toString());
+    }
+
+    public String extractUUID(String token) {
+        return (String)extractClaim(token, claims -> claims.get("uuid").toString());
     }
 
     public Date extractExpiration(String token) {
@@ -43,19 +52,20 @@ public class JWTutils {
                 .getBody();
     }
 
-    // Check if token is expired
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(String username, long expiration) {
-        Map<String, Object> claims = new HashMap<>(); // Add custom claims if needed
+    public String generateToken(String username, long expiration, String role) {
+        Map<String, String> claims = new HashMap<>();
+        claims.put("role", role);
+        claims.put("uuid", UUID.randomUUID().toString());
         return createToken(claims, username, expiration);
     }
 
-    private String createToken(Map<String, Object> claims, String username, long expiration) {
+    private String createToken(Map<String, String> claims, String username, long expiration) {
         return Jwts.builder()
-                /*.setClaims(claims)*/
+                .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
@@ -63,13 +73,13 @@ public class JWTutils {
                 .compact();
     }
 
-    /*public Boolean validateToken(String token) {
+    public Boolean validateToken(String token) {
         try {
             return !isTokenExpired(token);
         } catch (Exception e) {
             return false;
         }
-    }*/
+    }
 
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);

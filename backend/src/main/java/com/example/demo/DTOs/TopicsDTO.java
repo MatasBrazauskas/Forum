@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class TopicsDTO
 {
+    private String topicsName;
     private String username;
     private LocalDateTime created;
     private String description;

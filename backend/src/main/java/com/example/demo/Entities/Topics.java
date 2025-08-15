@@ -33,7 +33,10 @@ public class Topics
     @BatchSize(size = 20)
     private List<Thread> threads;
 
-    @Column(nullable = false, columnDefinition = "DATA", name = "created")
+    @Column(nullable = false, columnDefinition = "VARCHAR(256)", name = "topics_name")
+    private String topicsName;
+
+    @Column(nullable = false, columnDefinition = "DATE", name = "created")
     private LocalDateTime created;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(255)", name = "description")
@@ -46,6 +49,6 @@ public class Topics
     private int postCount;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "ENUM('INFORMATION', 'TOPICS')", name = "topic_type")
+    @Column(nullable = false, columnDefinition = "ENUM('INFORMATION', 'GENERAL')", name = "topic_type")
     private TOPIC_TYPE topicType;
 }

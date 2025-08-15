@@ -1,18 +1,16 @@
-import Dropdown from 'react-bootstrap/Dropdown';
+import { useReducer, useState } from 'react';
 
 import './DropDownStyle.css';
 
 function DropDownComponent({ title } : { title: string} ) {
+    const [showThreads, setShowThreads] = useReducer((state: boolean) => {
+        return !state;
+    }, false);
 
     return (
-        <Dropdown>
-            <Dropdown.Toggle id="dropdown-basic" className='dropDown'>{title}</Dropdown.Toggle>
-            <Dropdown.Menu>
-                <Dropdown.Item className='dropDown'>TEMP1</Dropdown.Item>   
-                <Dropdown.Item className='dropDown'>TEMP1</Dropdown.Item>   
-                <Dropdown.Item className='dropDown'>TEMP1</Dropdown.Item>   
-            </Dropdown.Menu>
-        </Dropdown>
+        <div>
+            <div onClick={() => setShowThreads()} className='dropDown'>{title}</div>
+        </div>
     )
 }
 

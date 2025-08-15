@@ -2,14 +2,8 @@ package com.example.demo.Controller;
 
 import com.example.demo.DTOs.ProfileInfoDTO;
 import com.example.demo.DTOs.RegisterDTO;
-import com.example.demo.Middleware.CookieFactory;
-import com.example.demo.Middleware.Validation.JWTutils;
 import com.example.demo.Service.CookieService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
-import org.springframework.context.annotation.Profile;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,8 +32,8 @@ public class CookieController
             @CookieValue(value = "persistentCookie", required = false) String persistentToken,
             HttpServletResponse response)
     {
-        System.out.println(persistentToken);
-        System.out.println(sessionToken);
+        System.out.println("Persistent token: " + persistentToken);
+        System.out.println("Session token: " + sessionToken);
 
         return  cookieService.loginUser(sessionToken, persistentToken, response);
     }
