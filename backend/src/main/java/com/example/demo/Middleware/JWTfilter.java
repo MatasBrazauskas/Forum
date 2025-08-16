@@ -38,7 +38,22 @@ public final class JWTfilter extends OncePerRequestFilter
         final String persistentCookieJWT = MiddlewareUtils.extractTokenFromCookie(request, MiddlewareUtils.persistentCookieName);
         final String sessionCookieJWT = MiddlewareUtils.extractTokenFromCookie(request, MiddlewareUtils.sessionCookieName);
 
-        System.out.println("Persistent cookies JWT - " + persistentCookieJWT);
+        if(sessionCookieJWT == null)
+        {
+            final String role = persistentCookieJWT == null ? "GUEST" : userProfileRepo.findByEmail(jwtUtils.extractEmail(persistentCookieJWT)).getRole().toString();
+            cookieFactory.addSessionCookie(response, role);
+            filterChain.doFilter(request, response);
+        }
+
+        final String role = jwtUtils.extractRole(sessionCookieJWT);
+        final var email = persistentCookieJWT == null ? null :  jwtUtils.extractEmail(persistentCookieJWT);
+
+        var auth = new UsernamePasswordAuthenticationToken(email, role, List.of(new SimpleGrantedAuthority("ROLE_" + role.toUpperCase())));
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        filterChain.doFilter(request, response);
+
+        /*System.out.println("Persistent cookies JWT - " + persistentCookieJWT);
         System.out.println("Session cookies JWT - " + sessionCookieJWT);
 
         if(sessionCookieJWT == null)
@@ -58,13 +73,15 @@ public final class JWTfilter extends OncePerRequestFilter
             SecurityContextHolder.getContext().setAuthentication(auth);
 
             filterChain.doFilter(request, response);
+            return;
         }
         final String role = jwtUtils.extractRole(sessionCookieJWT);
         final var userProfile =  userProfileRepo.findByEmail(jwtUtils.extractEmail(persistentCookieJWT));
+
         System.out.println("Persistent cookies JWT(for getting user info) - " + userProfile.getUsername());
         var auth = new UsernamePasswordAuthenticationToken(userProfile.getUsername(), null, List.of(new SimpleGrantedAuthority("ROLE_" + role.toUpperCase())));
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(request, response);*/
     }
 }

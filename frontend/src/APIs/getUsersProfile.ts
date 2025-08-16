@@ -13,6 +13,8 @@ async function getUsersProfile(): Promise<UserInformation>{
         if(response.status === HTTP_CODES.OK){
             return data;
         }
+        else if(response.status === HTTP_CODES.BAD_REQUEST){
+        }
     }catch(e){
         console.error(e);
         console.warn('Error with gettin users info');

@@ -2,18 +2,19 @@ import { Outlet } from "react-router-dom";
 import TopBar from "../TopBar/TopBar";
 import DropDownComponent from "../Components/DropDownComponent";
 import { useQuery } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
 import AddTopicComponent from "../Components/AddTopicComponent";
 import { adduserInfo } from "../Store/userState";
 import getTopics from "../APIs/getTopics";
 import getUsersProfile from "../APIs/getUsersProfile";
+import type { RootState } from "../Store/store";
 
 function MainPage(){
     const dispatch = useDispatch();
+    const usersData = useSelector((state: RootState) => state.USER_INFO);
 
-    //const { data: topicsArray, isError, error } = useQuery({
     const temp = useQuery({
         queryKey: ['topics'],
         queryFn: () => getTopics(),
@@ -37,10 +38,10 @@ function MainPage(){
         <div>
             <TopBar />
 
-            <DropDownComponent title='Information' topicsArray={temp.data?.filter(i => i.topicType === "INFORMATION")!}/>
+            <DropDownComponent title='Information' topicsArray={temp.data?.filter(i => i.topicType === "INFORMATION").map(obj => ({...obj, created: new Date(obj.created).toISOString()}))!}/>
             <DropDownComponent title='General' topicsArray={temp.data?.filter(i => i.topicType === "GENERAL")!}/>
 
-            <AddTopicComponent/>
+            {usersData.role === 'ADMIN' && <AddTopicComponent/>}
 
             <Outlet />
         </div>

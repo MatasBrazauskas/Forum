@@ -2,7 +2,6 @@ package com.example.demo.Controller;
 
 import com.example.demo.DTOs.ProfileInfoDTO;
 import com.example.demo.Repository.UserProfileRepository;
-import org.apache.coyote.Response;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -13,12 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/users")
-public class UserProfileService
+public class UserProfileController
 {
     private final UserProfileRepository userProfileRepo;
     private final ModelMapper mapper;
 
-    public UserProfileService(UserProfileRepository userProfileRepo, ModelMapper mapper) {
+    public UserProfileController(UserProfileRepository userProfileRepo, ModelMapper mapper) {
         this.userProfileRepo = userProfileRepo;
         this.mapper = mapper;
     }
@@ -28,13 +27,12 @@ public class UserProfileService
     {
         System.out.println("getUserData");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        final String username = authentication.getPrincipal().toString();
+        final var principal = authentication.getPrincipal();
 
-        var profile = userProfileRepo.findByUsername(username);
-        if(profile == null)
-        {
-            return  ResponseEntity.notFound().build();
-        }
+        if(principal == null)
+            return  ResponseEntity.badRequest().build();
+
+        var profile = userProfileRepo.findByEmail(principal.toString());
         return ResponseEntity.ok().body(mapper.map(profile,  ProfileInfoDTO.class));
     }
 }

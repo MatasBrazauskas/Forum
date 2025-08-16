@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 .dropDown{
     display: flex;
     align-items: center;
@@ -5,4 +7,11 @@
     width: 1200px;
     background-color: #273c75;
     gap: 10px;
+}
+
+.dropDownItem{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 1200px;
 }
