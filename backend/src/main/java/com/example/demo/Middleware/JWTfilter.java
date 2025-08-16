@@ -56,13 +56,14 @@ public final class JWTfilter extends OncePerRequestFilter
             cookieFactory.addSessionCookie(response, role);
             var auth = new UsernamePasswordAuthenticationToken(null, null, List.of(new SimpleGrantedAuthority("ROLE_" + role.toString().toUpperCase())));
             SecurityContextHolder.getContext().setAuthentication(auth);
+
+            filterChain.doFilter(request, response);
         }
-        else{
-            final String role = jwtUtils.extractRole(sessionCookieJWT);
-            final var userProfile =  userProfileRepo.findByEmail(jwtUtils.extractEmail(persistentCookieJWT));
-            var auth = new UsernamePasswordAuthenticationToken(userProfile.getUsername(), null, List.of(new SimpleGrantedAuthority("ROLE_" + role.toUpperCase())));
-            SecurityContextHolder.getContext().setAuthentication(auth);
-        }
+        final String role = jwtUtils.extractRole(sessionCookieJWT);
+        final var userProfile =  userProfileRepo.findByEmail(jwtUtils.extractEmail(persistentCookieJWT));
+        System.out.println("Persistent cookies JWT(for getting user info) - " + userProfile.getUsername());
+        var auth = new UsernamePasswordAuthenticationToken(userProfile.getUsername(), null, List.of(new SimpleGrantedAuthority("ROLE_" + role.toUpperCase())));
+        SecurityContextHolder.getContext().setAuthentication(auth);
 
         filterChain.doFilter(request, response);
     }

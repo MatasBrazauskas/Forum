@@ -1,14 +1,19 @@
 import { REGISTER_REQUEST, HTTP_CODES } from "./const";
 import { type UserInformation } from "../Store/utils";
 
-async function authRequest(username: string, email: string){
+type temp = {
+    username:string,
+    email: string,
+}
+
+async function authRequest(credentials: temp){
     try{
         const response = await fetch(REGISTER_REQUEST, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({'username' : username, 'email' : email}),
+            body: JSON.stringify(credentials),
             credentials: 'include'
         })
 
@@ -17,12 +22,9 @@ async function authRequest(username: string, email: string){
         if(response.status === HTTP_CODES.OK){
             return data;
         }
-
-        if(response.status === HTTP_CODES.UNAUTHORIZED){
-            throw new Error('UNAUTHRIZED');
-        }
     } catch (e){
         console.error(e);
+        console.warn('Error is getting users info')
     }
     throw new Error('Failed to fecth for authentication');
 }

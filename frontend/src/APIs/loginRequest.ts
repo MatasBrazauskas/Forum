@@ -1,4 +1,4 @@
-import type { UserInformation } from "../Store/utils";
+/*import type { UserInformation } from "../Store/utils";
 import { LOGIN_REQUEST} from "./const";
 import { HTTP_CODES } from "./const";
 
@@ -21,4 +21,4 @@ async function loginRequest(): Promise<UserInformation | null>{
     return null;
 }
 
-export default loginRequest;
+export default loginRequest;*/

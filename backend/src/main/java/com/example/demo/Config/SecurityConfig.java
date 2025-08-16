@@ -36,6 +36,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/cookies").permitAll()
                         .requestMatchers(HttpMethod.POST, "/topics").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/topics").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/users").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(rateLimiterFilter,  UsernamePasswordAuthenticationFilter.class)

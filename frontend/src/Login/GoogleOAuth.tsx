@@ -5,7 +5,7 @@ import { jwtDecode } from "jwt-decode";
 
 import authRequest from "../APIs/authRequest";
 
-type Register = {
+export type Register = {
     name: string,
     email: string,
 }
@@ -14,8 +14,8 @@ function GoogleOAuth(){
 
     const { isError, error, mutate } = useMutation({
         mutationFn: async (e: CredentialResponse) => {
-            const data: Register= jwtDecode(e.credential!);
-            await authRequest(data.name, data.email)
+            const data:Register = jwtDecode(e.credential!);
+            await authRequest({ username: data?.name!, email: data?.email!})
     }});
 
     return (
