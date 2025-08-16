@@ -4,6 +4,7 @@ import com.example.demo.DTOs.ProfileInfoDTO;
 import com.example.demo.DTOs.RegisterDTO;
 import com.example.demo.Service.CookieService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,17 +25,5 @@ public class CookieController
         System.out.println(registerDTO.getUsername());
         System.out.println(registerDTO.getEmail());
         return cookieService.registerUser(response, registerDTO);
-    }
-
-    @GetMapping("/login")
-    public ResponseEntity<?> login(
-            @CookieValue(value = "sessionCookie", required = false) String sessionToken,
-            @CookieValue(value = "persistentCookie", required = false) String persistentToken,
-            HttpServletResponse response)
-    {
-        System.out.println("Persistent token: " + persistentToken);
-        System.out.println("Session token: " + sessionToken);
-
-        return  cookieService.loginUser(sessionToken, persistentToken, response);
     }
 }

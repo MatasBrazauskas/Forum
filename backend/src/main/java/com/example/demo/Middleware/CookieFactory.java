@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class CookieFactory
 {
     private final int SESSION_COOKIE_MAX_AGE = -1;
-    private final int PERSISTENT_COOKIE_MAX_AGE = 60 * 5;
+    private final int PERSISTENT_COOKIE_MAX_AGE = 60 * 60 * 24 * 30;
 
     public JWTutils jwtUtils;
 
@@ -19,10 +19,10 @@ public class CookieFactory
         this.jwtUtils = jwtUtils;
     }
 
-    public void addPersistentCookie(HttpServletResponse response, String username, String role)
+    public void addPersistentCookie(HttpServletResponse response, String email)
     {
-        final var token = jwtUtils.generateToken(username, PERSISTENT_COOKIE_MAX_AGE, role);
-        var persistentCookie = new Cookie("persistentCookie", token);
+        final var jwtToken = jwtUtils.generatePersistentJWT(email);
+        var persistentCookie = new Cookie(MiddlewareUtils.persistentCookieName, jwtToken);
 
         persistentCookie.setMaxAge(PERSISTENT_COOKIE_MAX_AGE);
         persistentCookie.setPath("/");
@@ -33,16 +33,16 @@ public class CookieFactory
         response.addCookie(persistentCookie);
     }
 
-    public void addSessionCookie(HttpServletResponse response, String username, String role)
+    public void addSessionCookie(HttpServletResponse response, String role)
     {
-        final var token = jwtUtils.generateToken(username, 60 * 5, role);
-        var persistentCookie = new Cookie("sessionCookie", token);
+        final var jwtToken = jwtUtils.generateSessionJWT(role);
+        var sessionCookie = new Cookie(MiddlewareUtils.sessionCookieName, jwtToken);
 
-        persistentCookie.setPath("/");
-        persistentCookie.setHttpOnly(true);
-        persistentCookie.setDomain("localhost");
-        persistentCookie.setAttribute("SameSite", "Lax");
+        sessionCookie.setPath("/");
+        sessionCookie.setHttpOnly(true);
+        sessionCookie.setDomain("localhost");
+        sessionCookie.setAttribute("SameSite", "Lax");
 
-        response.addCookie(persistentCookie);
+        response.addCookie(sessionCookie);
     }
 }

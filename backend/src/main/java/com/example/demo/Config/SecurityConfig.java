@@ -1,8 +1,10 @@
 package com.example.demo.Config;
 
+import com.example.demo.Middleware.CookieFactory;
 import com.example.demo.Middleware.JWTfilter;
 import com.example.demo.Middleware.JWTutils;
 import com.example.demo.Middleware.RateLimiterFilter;
+import com.example.demo.Repository.UserProfileRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,10 +21,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JWTfilter jwtFilter; // Inject your custom filter here
-
     // Constructor to inject the custom filter
-    public SecurityConfig() {
-        this.jwtFilter= new JWTfilter(new JWTutils());
+    public SecurityConfig(JWTfilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
     }
 
     @Bean

@@ -16,24 +16,10 @@ function TopBar() {
 
     const userInfo = useSelector((state: RootState) => state.USER_INFO);
     const navigator = useNavigate();
-    const dispatch = useDispatch();
 
     const [profile, setProfile] = useState(false);
     const [login, setLogin] = useState(false);
     const [search, setSearch] = useState(false);
-
-
-    useEffect(() => {
-        const APIcall = async () => {
-            const data = await loginRequest();
-            
-            if(data !== null){
-                dispatch(adduserInfo(data));
-            }
-        }
-
-        APIcall();
-    }, [])
 
     return (
         <div className = 'top_bar_container'>

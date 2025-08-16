@@ -25,7 +25,7 @@ public class Topics
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity =  UserProfile.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity =  UserProfile.class)
     @JoinColumn(name = "thread_creator")
     private UserProfile creator;
 

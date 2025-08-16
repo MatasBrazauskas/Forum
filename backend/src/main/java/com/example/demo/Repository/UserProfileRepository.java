@@ -12,4 +12,7 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, Intege
 {
     @Transactional
     public UserProfile findByUsername(String username);
+
+    @Transactional
+    public UserProfile findByEmail(String email);
 }

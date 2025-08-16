@@ -37,6 +37,7 @@ public class TopicController
     public ResponseEntity<List<TopicsDTO>> getTopics()
     {
         List<TopicsDTO> topics = topicsRepo.findAll().stream().map(tp -> mapper.map(tp, TopicsDTO.class)).toList();
+        System.out.println(topics.size());
         return ResponseEntity.ok(topics);
     }
 

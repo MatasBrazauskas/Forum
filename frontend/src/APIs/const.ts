@@ -1,5 +1,3 @@
-import { type UserInformation } from "../Store/utils";
-
 const COOKIE_CONTROLLER_URL:string = import.meta.env.VITE_COOKIE_CONTROLLER;
 const TOPICS_CONTROLLER_URL:string = import.meta.env.VITE_TOPICS_CONTROLLER;
 
@@ -12,10 +10,9 @@ export enum HTTP_CODES {
     UNAUTHORIZED = 401,
 }
 
-export enum TOPICS {
-    INFORMATION,
-    GENERAL,
-}
+export type TOPICS = 
+    |"INFORMATION" 
+    | "GENERAL"
 
 export type TopicsInfo = {
     topicsName: string,

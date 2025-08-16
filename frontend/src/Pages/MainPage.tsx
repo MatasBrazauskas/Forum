@@ -1,43 +1,39 @@
 import { Outlet } from "react-router-dom";
 import TopBar from "../TopBar/TopBar";
 import DropDownComponent from "../Components/DropDownComponent";
+import { useQuery } from "@tanstack/react-query";
 
 //TEMP
-import { TOPICS_REQUEST } from "../APIs/const";
+import { TOPICS_REQUEST, type TopicsInfo } from "../APIs/const";
 import AddTopicComponent from "../Components/AddTopicComponent";
 
 function MainPage(){
 
-    const unprotectedAPI = async () => {
+    const unprotectedAPI = async (): Promise<TopicsInfo[]> => {
         const response = await fetch(TOPICS_REQUEST, {
             method: 'GET',
             credentials: 'include'
         });
 
-        const data = await response.json();
-        console.log(`Unprotected data ${data}`);
+        const data: TopicsInfo[] = await response.json();
+        console.log(data);
+
+        return data;
     }
 
-    const protectedAPI = async () => {
-        const response = await fetch(TOPICS_REQUEST + '/admin', {
-            method: 'GET',
-            credentials: 'include'
-        })
-
-        const data = await response.json();
-        console.log(`Protected data ${data}`);
-    }
-
-
+    const { data, isError, error } = useQuery({
+        queryKey: ['topics'],
+        queryFn: () => unprotectedAPI(),
+        staleTime: 60 * 10 * 1000,
+    });
 
     return (
         <div>
             <TopBar />
-            <DropDownComponent title='Information'/>
-            <DropDownComponent title='Topics'/>
+            {isError && <div>{error?.message}</div>}
 
-            <button onClick={() => unprotectedAPI()}>Call unprotected API</button>
-            <button onClick={() => protectedAPI()}>Call protected API</button>
+            <DropDownComponent title='Information' topicsArray={data?.filter(i => i.topicType === "INFORMATION")!}/>
+            <DropDownComponent title='General' topicsArray={data?.filter(i => i.topicType === "GENERAL")!}/>
 
             <AddTopicComponent/>
 

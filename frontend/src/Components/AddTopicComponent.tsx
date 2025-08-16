@@ -2,6 +2,7 @@ import { useRef } from "react";
 
 import { type AddTopicsDTO } from "../APIs/const";
 import addTopic from "../APIs/addTopic";
+import { queryClient } from "../main";
 
 function AddTopicComponent(){
 
@@ -15,10 +16,11 @@ function AddTopicComponent(){
         const data: AddTopicsDTO = {
             topicsName: topicsName?.current?.value!,
             description: description?.current?.value!,
-            topicType: 'GENERAL',
+            topicType: topicsType?.current?.value!,
         }
 
         const response = await addTopic(data);
+        queryClient.invalidateQueries({ queryKey: ['topics']});
         console.log(response);
     }
 

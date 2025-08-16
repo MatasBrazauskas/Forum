@@ -44,32 +44,9 @@ public class CookieService
 
         }
 
-        cookieFactory.addPersistentCookie(response, registerDTO.getUsername(), user.getRole().toString());
-        cookieFactory.addSessionCookie(response, registerDTO.getUsername(), user.getRole().toString());
+        cookieFactory.addPersistentCookie(response, user.getEmail());
+        cookieFactory.addSessionCookie(response, user.getRole().toString());
 
         return ResponseEntity.ok(mapper.map(user, ProfileInfoDTO.class));
-    }
-
-    @Transactional
-    public ResponseEntity<?> loginUser(String sessionToken, String persistentToken, HttpServletResponse response)
-    {
-        if(persistentToken == null)
-        {
-            System.out.println("Cookie service - There is no persistent token, creating session GUEST token!");
-            cookieFactory.addSessionCookie(response, "GUEST", "GUEST");
-            return ResponseEntity.ok(new PartialProfileInfoDTO("GUEST", "GUEST"));
-        }
-        else
-        {
-            System.out.println("Cookie service - Creating session and persistent token for USER");
-            final var username = jWTutils.extractUsername(persistentToken);
-            final var user =  userProfileRepo.findByUsername(username);
-
-            if(sessionToken == null){
-                cookieFactory.addSessionCookie(response, username,  user.getRole().toString());
-            }
-
-            return ResponseEntity.ok(mapper.map(user, ProfileInfoDTO.class));
-        }
     }
 }
