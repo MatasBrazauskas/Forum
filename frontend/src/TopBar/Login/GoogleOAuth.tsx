@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { type CredentialResponse } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 
-import logInOrRegister from "../APIs/authRequest";
+import logInOrRegister from '../../APIs/logInOrRegister';
 
 export type Register = {
     name: string,

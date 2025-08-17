@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 @Component
 @Order(1)
@@ -41,7 +42,10 @@ public class SessionManagementFilter extends OncePerRequestFilter
 
             if(persistentJWT != null){
                 final String email = jwtUtils.extractEmail(persistentJWT);
-                final var user = userProfileRepo.findByEmail(email);
+
+                var user = userProfileRepo.findByEmail(email);
+                user.setLastOnline(LocalDate.now());
+                userProfileRepo.save(user);
 
                 role = user.getRole().toString();
             }

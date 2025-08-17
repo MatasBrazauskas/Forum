@@ -1,6 +1,8 @@
 package com.example.demo.Config;
 
 import com.example.demo.DTOs.ProfileInfoDTO;
+import com.example.demo.Entities.Thread;
+import com.example.demo.DTOs.ThreadsDTO;
 import com.example.demo.DTOs.TopicsDTO;
 import com.example.demo.Entities.Topics;
 import com.example.demo.Entities.UserProfile;
@@ -35,6 +37,14 @@ public class ModelMapperConfig
                 .addMapping(tp -> tp.getThreadCount(), TopicsDTO::setThreadCount)
                 .addMapping(tp -> tp.getPostCount(), TopicsDTO::setPostCount)
                 .addMapping(tp -> tp.getTopicType(), TopicsDTO::setTopicType);
+
+        modelMapper.createTypeMap(Thread.class, ThreadsDTO.class)
+                .addMapping(th -> th.getUserProfile().getUsername(), ThreadsDTO::setUsername)
+                .addMapping(th -> th.getUserProfile().getLastOnline(), ThreadsDTO::setLastOnline)
+                .addMapping(th -> th.getTitle(), ThreadsDTO::setTitle)
+                .addMapping(th -> th.getDateOfCreation(), ThreadsDTO::setDateOfCreation)
+                .addMapping(th -> th.getCommentCount(), ThreadsDTO::setCommentCount)
+                .addMapping(th -> th.getUpvoteCount(), ThreadsDTO::setUpvoteCount);
 
         return modelMapper;
     }

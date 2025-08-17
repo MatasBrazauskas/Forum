@@ -34,9 +34,9 @@ function AddTopicComponent(){
         <div>
             <div className='dropDown' onClick={() => switchState()}>Add New Topic</div>
             {open && 
-            <form onSubmit={(e) => handleSubmit(e)} className='addTopic'>
-                <input type='text' ref={topicsName} placeholder="Enter new topics name"/>
-                <input type='text' ref={description} placeholder="Enter new topics description"/>
+            <form onSubmit={(e) => handleSubmit(e)} className='addTopic' >
+                <input type='text' ref={topicsName} placeholder="Enter new topics name" className='w-90'/>
+                <input type='text' ref={description} placeholder="Enter new topics description" className='w-90'/>
                 <select ref={topicsType}>
                     <option value="INFORMATION">INFORMATION</option>
                     <option value="GENERAL">GENERAL</option>

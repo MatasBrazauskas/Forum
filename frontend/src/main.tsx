@@ -1,7 +1,7 @@
 import { lazy } from 'react'
 import { createRoot } from 'react-dom/client'
 
-import { GOOGLE_CLIENT_ID } from './Login/const'
+import { GOOGLE_CLIENT_ID } from './TopBar/Login/const';
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -19,11 +19,12 @@ export const queryClient = new QueryClient({
   }
 });
 
-const MainPage = lazy(() => import('./Pages/MainPage'));
+const MainPage = lazy(() => import('./MainPage'));
 const ForumPage = lazy(() => import('./Forum/ForumPage'));
-const RulesPage = lazy(() => import('./Rules/RulesPage'));
-const ProfilePage = lazy(() => import('./Profile/ProfilePage'));
-const InboxPage = lazy(() => import('./Inbox/InboxPage'));
+const ThreadPage = lazy(() => import('./Treads/ThreadPage'));
+/*const RulesPage = lazy(() => import('./TopBar/Rules/RulesPage'));*/
+const ProfilePage = lazy(() => import('./Profile/ProfileModal'));
+const InboxPage = lazy(() => import('./TopBar/InboxPage'));
 
 function App(){
 
@@ -32,7 +33,9 @@ function App(){
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<MainPage />}>
-              <Route path='rules' element={<RulesPage />}/>
+              <Route path='' element={<ForumPage />}/>
+              {/*<Route path='rules' element={<RulesPage />}/>*/}
+              <Route path='threads/:topicsName' element={<ThreadPage />} />
               <Route path='profile' element={<ProfilePage />}/>
               <Route path='inbox' element={<InboxPage />}/>
             </Route>

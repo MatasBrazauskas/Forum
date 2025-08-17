@@ -28,6 +28,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/topics").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/topics").permitAll()
                         .requestMatchers(HttpMethod.GET, "/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/threads/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/threads/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(sessionManagementFilter, UsernamePasswordAuthenticationFilter.class)

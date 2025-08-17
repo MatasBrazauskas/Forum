@@ -4,8 +4,10 @@ import './DropDownStyle.css';
 import type { TopicsInfo } from '../APIs/const';
 
 import '../tailwind.css';
+import { useNavigate } from 'react-router-dom';
 
 function DropDownComponent({ title, topicsArray } : { title: string, topicsArray: TopicsInfo[]} ) {
+
     const [showThreads, setShowThreads] = useReducer((state: boolean) => {
         return !state;
     }, true);
@@ -29,10 +31,15 @@ function DropDownComponent({ title, topicsArray } : { title: string, topicsArray
 
 function DropDownItem({topics, i}: {topics: TopicsInfo, i: number}){
 
+    const navigation = useNavigate();
+
+    const swtichPages = (topicsName: string) => {
+        navigation(`threads/${topicsName}`);
+    }
     return (
         <div className='dropDownItem' key={i}>
-            <div>
-                <div className='text-xl font-black'>{topics.topicsName}</div>
+            <div className='w-150'>
+                <div className='text-xl font-black' onClick={() => swtichPages(topics.topicsName)}>{topics.topicsName}</div>
                 <div className='text-sm'>{topics.description}</div>
             </div>
 

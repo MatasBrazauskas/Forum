@@ -1,6 +1,7 @@
 package com.example.demo.Entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,8 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "threads", indexes = {@Index(name = "index_title", columnList = "title")})
+@Table(name = "threads", indexes = {@Index(columnList = "title")})
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class Thread
 {
@@ -20,7 +22,7 @@ public class Thread
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = UserProfile.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = UserProfile.class)
     @JoinColumn(name = "user_profile")
     private UserProfile userProfile;
 
@@ -32,8 +34,11 @@ public class Thread
     @BatchSize(size = 20)
     private List<Comment> comments = new ArrayList<>();
 
-    @Column(unique = true, nullable = false, name = "title", columnDefinition = "VARCHAR(128)")
+    @Column(unique = true, nullable = false, name = "title", columnDefinition = "NVARCHAR(128)")
     private String title;
+
+    @Column(nullable = false, name = "content", columnDefinition = "NVARCHAR(512)")
+    private String content;
 
     @Column(nullable = false, name = "date_of_creation", columnDefinition = "DATE")
     private LocalDate dateOfCreation;

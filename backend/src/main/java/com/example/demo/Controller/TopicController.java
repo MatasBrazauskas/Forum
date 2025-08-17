@@ -6,6 +6,7 @@ import com.example.demo.Entities.Topics;
 import com.example.demo.Entities.UserProfile;
 import com.example.demo.Repository.TopicsRepository;
 import com.example.demo.Repository.UserProfileRepository;
+import com.example.demo.Service.TopicsService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -26,15 +27,11 @@ import java.util.List;
 @Slf4j
 public class TopicController
 {
-    private final TopicsRepository topicsRepo;
-    private final ModelMapper mapper;
-    private final UserProfileRepository userProfileRepo;
+    private final TopicsService topicsService;
 
-    public TopicController(TopicsRepository topicsRepository, ModelMapper modelMapper, UserProfileRepository userProfileRepository)
+    public TopicController(TopicsService topicsService)
     {
-        this.topicsRepo = topicsRepository;
-        this.mapper = modelMapper;
-        this.userProfileRepo = userProfileRepository;
+        this.topicsService = topicsService;
     }
 
     @GetMapping
@@ -42,8 +39,7 @@ public class TopicController
     public ResponseEntity<List<TopicsDTO>> getTopics()
     {
         log.info("Getting all of topics");
-        List<TopicsDTO> topics = topicsRepo.findAll().stream().map(tp -> mapper.map(tp, TopicsDTO.class)).toList();
-        return ResponseEntity.ok(topics);
+        return topicsService.getTopics();
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -52,21 +48,6 @@ public class TopicController
     public ResponseEntity<Void> addNewTopic(@RequestBody @Valid AddTopicsInfoDTO addTopicsInfo)
     {
         log.info("Adding new topic");
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        final var authUser =  authentication.getPrincipal().toString();
-
-        var profile = userProfileRepo.findByEmail(authUser);
-
-        var newTopic = new Topics();
-        newTopic.setCreator(profile);
-        newTopic.setTopicsName(addTopicsInfo.getTopicsName());
-        newTopic.setCreated(LocalDateTime.now());
-        newTopic.setDescription(addTopicsInfo.getDescription());
-        newTopic.setThreadCount(0);
-        newTopic.setPostCount(0);
-        newTopic.setTopicType(addTopicsInfo.getTopicType());
-
-        topicsRepo.save(newTopic);
-        return ResponseEntity.ok().build();
+        return topicsService.addNewTopic(addTopicsInfo);
     }
 }

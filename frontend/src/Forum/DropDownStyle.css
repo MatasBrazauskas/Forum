@@ -3,7 +3,7 @@
 .dropDown{
     display: flex;
     align-items: center;
-    padding-left: 50px;
+    padding: 10px 10px 10px 50px;
     width: 1200px;
     background-color: #273c75;
     font-size: 20px;

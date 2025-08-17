@@ -2,13 +2,11 @@ import { useSelector, } from "react-redux";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import LogInMonad from "../Login/LogInMonad";
-import ProfileModal from "../Profile/ProfileModal";
-import SearchModal from "../Search/SearchMonad";
+import LogInMonad from './Login/LogInMonad';
+import ProfileModal from '../Profile/ProfileModal';
+import SearchModal from "./SearchMonad";
 
 import type { RootState } from "../Store/store";
-//import loginRequest from "../APIs/loginRequest";
-//import { adduserInfo } from "../Store/userState";
 
 import './style.css';
 
