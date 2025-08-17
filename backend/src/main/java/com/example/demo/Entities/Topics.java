@@ -1,12 +1,14 @@
 package com.example.demo.Entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.catalina.User;
 import org.hibernate.annotations.BatchSize;
 import org.springframework.boot.autoconfigure.pulsar.PulsarProperties;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,6 +16,7 @@ import java.util.List;
 @Table(name = "topics")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Topics
 {
     public enum TOPIC_TYPE {
@@ -39,7 +42,7 @@ public class Topics
     @Column(nullable = false, columnDefinition = "DATE", name = "created")
     private LocalDateTime created;
 
-    @Column(nullable = false, columnDefinition = "VARCHAR(255)", name = "description")
+    @Column(nullable = false, columnDefinition = "VARCHAR(256)", name = "description")
     private String description;
 
     @Column(nullable = false, columnDefinition = "SMALLINT UNSIGNED", name = "thread_count")

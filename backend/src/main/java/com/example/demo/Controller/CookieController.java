@@ -5,11 +5,13 @@ import com.example.demo.DTOs.RegisterDTO;
 import com.example.demo.Service.CookieService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/cookies")
+@Slf4j
 public class CookieController
 {
     private final CookieService cookieService;
@@ -20,10 +22,9 @@ public class CookieController
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ProfileInfoDTO> register(HttpServletResponse response, /*@Valid*/ @RequestBody RegisterDTO registerDTO)
+    public ResponseEntity<ProfileInfoDTO> register(HttpServletResponse response, @Valid @RequestBody RegisterDTO registerDTO)
     {
-        System.out.println(registerDTO.getUsername());
-        System.out.println(registerDTO.getEmail());
+        log.info("Logging/registering a user");
         return cookieService.registerUser(response, registerDTO);
     }
 }

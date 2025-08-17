@@ -10,11 +10,12 @@ export const USERS_PROFILE_REQUEST = `${USERS_CONTROLLER_URL}`;
 export enum HTTP_CODES {
     OK = 200,
     BAD_REQUEST = 400,
+    NO_CONTENT = 204,
     UNAUTHORIZED = 401,
 }
 
 export type TOPICS = 
-    |"INFORMATION" 
+    | "INFORMATION" 
     | "GENERAL"
 
 export type TopicsInfo = {

@@ -1,4 +1,4 @@
-import { useReducer, useState } from 'react';
+import { useReducer } from 'react';
 
 import './DropDownStyle.css';
 import type { TopicsInfo } from '../APIs/const';
@@ -7,13 +7,12 @@ import '../tailwind.css';
 
 function DropDownComponent({ title, topicsArray } : { title: string, topicsArray: TopicsInfo[]} ) {
     const [showThreads, setShowThreads] = useReducer((state: boolean) => {
-        console.log(!state);
         return !state;
     }, true);
 
     return (
         <div>
-            <div onClick={() => {setShowThreads(), console.log(topicsArray)}} className='dropDown'>{title}</div>
+            <div onClick={() => setShowThreads()} className='dropDown'>{title}</div>
 
             {showThreads && 
             <div>

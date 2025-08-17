@@ -1,14 +1,20 @@
-import { useRef } from "react";
+import { useRef, useReducer } from "react";
 
 import { type AddTopicsDTO } from "../APIs/const";
-import addTopic from "../APIs/addTopic";
+import addNewTopic from "../APIs/addNewTopic";
 import { queryClient } from "../main";
+
+import './DropDownStyle.css';
 
 function AddTopicComponent(){
 
     const topicsName = useRef<HTMLInputElement | null>(null);
     const description = useRef<HTMLInputElement | null>(null);
     const topicsType = useRef<HTMLSelectElement | null>(null);
+
+    const [open, switchState] = useReducer((state: boolean) => {
+        return !state;
+    }, true);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -19,21 +25,26 @@ function AddTopicComponent(){
             topicType: topicsType?.current?.value!,
         }
 
-        const response = await addTopic(data);
+        const response = await addNewTopic(data);
         queryClient.invalidateQueries({ queryKey: ['topics']});
         console.log(response);
     }
 
     return (
-        <form onSubmit={(e) => handleSubmit(e)}>
-            <input type='text' ref={topicsName} placeholder="Enter new topics name"/>
-            <input type='text' ref={description} placeholder="Enter new topics description"/>
-            <select ref={topicsType}>
-                <option value="INFORMATION">INFORMATION</option>
-                <option value="GENERAL">GENERAL</option>
-            </select>
-            <button type='submit'>POST</button>
-        </form>
+        <div>
+            <div className='dropDown' onClick={() => switchState()}>Add New Topic</div>
+            {open && 
+            <form onSubmit={(e) => handleSubmit(e)} className='addTopic'>
+                <input type='text' ref={topicsName} placeholder="Enter new topics name"/>
+                <input type='text' ref={description} placeholder="Enter new topics description"/>
+                <select ref={topicsType}>
+                    <option value="INFORMATION">INFORMATION</option>
+                    <option value="GENERAL">GENERAL</option>
+                </select>
+                <button type='submit'>POST</button>
+            </form>
+            }
+        </div>
     )
 }
 

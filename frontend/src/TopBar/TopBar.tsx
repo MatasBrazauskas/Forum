@@ -24,7 +24,7 @@ function TopBar() {
     return (
         <div className = 'top_bar_container'>
             <div className = 'left titles'>
-                <div onClick={() => navigator('forum')}>Forum</div>
+                <div onClick={() => navigator('/')}>Forum</div>
                 <div onClick={() => navigator('rules')}>Rules</div>
             </div>
             <div className = 'right'> 

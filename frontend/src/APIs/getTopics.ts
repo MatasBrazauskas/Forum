@@ -4,11 +4,15 @@ async function getTopics(): Promise<TopicsInfo[]>{
     try{
         const response = await fetch(TOPICS_REQUEST, {
             method: 'GET',
-            credentials: 'include'
+            credentials: 'include',
+            headers: {
+                "Content-Type":"application/json",
+            }
         }); 
 
-        const data = await response.json();
+
         if(response.status === HTTP_CODES.OK){
+            const data: TopicsInfo[] = await response.json();
             return data;
         }
 

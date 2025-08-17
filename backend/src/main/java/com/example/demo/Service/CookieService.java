@@ -35,13 +35,12 @@ public class CookieService
     @Transactional
     public ResponseEntity<ProfileInfoDTO> registerUser(HttpServletResponse response, RegisterDTO registerDTO)
     {
-        var user = userProfileRepo.findByUsername(registerDTO.getUsername());
+        var user = userProfileRepo.findByEmail(registerDTO.getEmail());
 
         if(user == null)
         {
             user = new UserProfile(registerDTO.getUsername(), registerDTO.getEmail(), LocalDate.now(), LocalDate.now(), 0, 0, UserProfile.Role.USER);
             userProfileRepo.save(user);
-
         }
 
         cookieFactory.addPersistentCookie(response, user.getEmail());

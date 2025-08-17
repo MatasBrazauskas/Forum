@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { type CredentialResponse } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 
-import authRequest from "../APIs/authRequest";
+import logInOrRegister from "../APIs/authRequest";
 
 export type Register = {
     name: string,
@@ -15,7 +15,7 @@ function GoogleOAuth(){
     const { isError, error, mutate } = useMutation({
         mutationFn: async (e: CredentialResponse) => {
             const data:Register = jwtDecode(e.credential!);
-            await authRequest({ username: data?.name!, email: data?.email!})
+            await logInOrRegister({ username: data?.name!, email: data?.email!})
     }});
 
     return (

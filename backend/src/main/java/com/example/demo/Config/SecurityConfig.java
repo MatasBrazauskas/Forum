@@ -1,9 +1,6 @@
 package com.example.demo.Config;
 
-import com.example.demo.Middleware.CookieFactory;
-import com.example.demo.Middleware.JWTfilter;
-import com.example.demo.Middleware.JWTutils;
-import com.example.demo.Middleware.RateLimiterFilter;
+import com.example.demo.Middleware.*;
 import com.example.demo.Repository.UserProfileRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,14 +17,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity// Ensures @PreAuthorize works
 public class SecurityConfig {
 
-    private final JWTfilter jwtFilter; // Inject your custom filter here
-    // Constructor to inject the custom filter
-    public SecurityConfig(JWTfilter jwtFilter) {
-        this.jwtFilter = jwtFilter;
-    }
-
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, RateLimiterFilter rateLimiterFilter) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http,SessionManagementFilter sessionManagementFilter, RateLimiterFilter rateLimiterFilter, JWTfilter jwtFilter) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
@@ -39,6 +30,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/users").permitAll()
                         .anyRequest().authenticated()
                 )
+                .addFilterBefore(sessionManagementFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(rateLimiterFilter,  UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

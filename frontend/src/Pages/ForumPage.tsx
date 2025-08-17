@@ -1,6 +1,4 @@
-import { Outlet } from "react-router-dom";
-import TopBar from "../TopBar/TopBar";
-/*import DropDownComponent from "../Components/DropDownComponent";
+import DropDownComponent from "../Components/DropDownComponent";
 import { useQuery } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -8,15 +6,14 @@ import { useEffect } from "react";
 import AddTopicComponent from "../Components/AddTopicComponent";
 import { adduserInfo } from "../Store/userState";
 import getTopics from "../APIs/getTopics";
-import getUsersProfile from "../APIs/getUsersProfile";*/
-//import type { RootState } from "../Store/store";
-//import ForumPage from "../Forum/ForumPage";
+import getUsersProfile from "../APIs/getUsersProfile";
+import type { RootState } from "../Store/store";
 
 function MainPage(){
-    //const dispatch = useDispatch();
-    //const usersData = useSelector((state: RootState) => state.USER_INFO);
+    const dispatch = useDispatch();
+    const usersData = useSelector((state: RootState) => state.USER_INFO);
 
-    /*const topicsArray = useQuery({
+    const topicsArray = useQuery({
         queryKey: ['topics'],
         queryFn: () => getTopics(),
         staleTime: 60 * 10 * 1000,
@@ -33,18 +30,14 @@ function MainPage(){
         if(usersInfo.isSuccess && !!usersInfo){
             dispatch(adduserInfo(usersInfo.data!));
         }
-    }, [usersInfo.data]);*/
+    }, [usersInfo.data]);
 
     return (
         <div>
-            <TopBar />
-
-            {/*<DropDownComponent title='Information' topicsArray={topicsArray?.data?.filter(i => i.topicType === "INFORMATION")!}/>
+            <DropDownComponent title='Information' topicsArray={topicsArray?.data?.filter(i => i.topicType === "INFORMATION")!}/>
             <DropDownComponent title='General' topicsArray={topicsArray?.data?.filter(i => i.topicType === "GENERAL")!}/>
 
-            {(!!usersData && usersData.role === 'ADMIN') && <AddTopicComponent/>}*/}
-
-            <Outlet />
+            {(!!usersData && usersData.role === 'ADMIN') && <AddTopicComponent/>}
         </div>
     )
 }

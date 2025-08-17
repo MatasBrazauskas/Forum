@@ -19,7 +19,7 @@ public class CookieFactory
         this.jwtUtils = jwtUtils;
     }
 
-    public void addPersistentCookie(HttpServletResponse response, String email)
+    public String addPersistentCookie(HttpServletResponse response, String email)
     {
         final var jwtToken = jwtUtils.generatePersistentJWT(email);
         var persistentCookie = new Cookie(MiddlewareUtils.persistentCookieName, jwtToken);
@@ -31,9 +31,11 @@ public class CookieFactory
         persistentCookie.setAttribute("SameSite", "Lax");
 
         response.addCookie(persistentCookie);
+
+        return jwtToken;
     }
 
-    public void addSessionCookie(HttpServletResponse response, String role)
+    public String addSessionCookie(HttpServletResponse response, String role)
     {
         final var jwtToken = jwtUtils.generateSessionJWT(role);
         var sessionCookie = new Cookie(MiddlewareUtils.sessionCookieName, jwtToken);
@@ -44,5 +46,7 @@ public class CookieFactory
         sessionCookie.setAttribute("SameSite", "Lax");
 
         response.addCookie(sessionCookie);
+
+        return jwtToken;
     }
 }

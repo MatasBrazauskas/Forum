@@ -1,4 +1,4 @@
-import { lazy, StrictMode } from 'react'
+import { lazy } from 'react'
 import { createRoot } from 'react-dom/client'
 
 import { GOOGLE_CLIENT_ID } from './Login/const'
@@ -32,7 +32,6 @@ function App(){
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<MainPage />}>
-              <Route path='forum' element={<ForumPage/>}/>
               <Route path='rules' element={<RulesPage />}/>
               <Route path='profile' element={<ProfilePage />}/>
               <Route path='inbox' element={<InboxPage />}/>

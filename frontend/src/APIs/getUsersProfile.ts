@@ -1,19 +1,22 @@
 import { HTTP_CODES, USERS_PROFILE_REQUEST } from "./const";
 import { type UserInformation } from "../Store/utils";
 
-async function getUsersProfile(): Promise<UserInformation>{
+async function getUsersProfile(): Promise<UserInformation |null>{
     try{
         const response = await fetch(USERS_PROFILE_REQUEST, {
             method: 'GET',
             credentials: 'include',
+            headers: {
+                "Content-Type":"application/json"
+            }
         })
 
-        const data: UserInformation = await response.json();
-
         if(response.status === HTTP_CODES.OK){
+            const data: UserInformation =  await response.json();
             return data;
         }
-        else if(response.status === HTTP_CODES.BAD_REQUEST){
+        else if(response.status === HTTP_CODES.NO_CONTENT){
+            return null;
         }
     }catch(e){
         console.error(e);

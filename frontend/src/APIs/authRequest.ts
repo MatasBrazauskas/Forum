@@ -6,7 +6,7 @@ type temp = {
     email: string,
 }
 
-async function authRequest(credentials: temp){
+async function logInOrRegister(credentials: temp){
     try{
         const response = await fetch(REGISTER_REQUEST, {
             method: 'POST',
@@ -16,6 +16,8 @@ async function authRequest(credentials: temp){
             body: JSON.stringify(credentials),
             credentials: 'include'
         })
+
+        console.warn(response);
 
         const data: UserInformation = await response.json();
 
@@ -29,4 +31,4 @@ async function authRequest(credentials: temp){
     throw new Error('Failed to fecth for authentication');
 }
 
-export default authRequest;
+export default logInOrRegister;
