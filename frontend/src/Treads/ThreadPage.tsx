@@ -1,28 +1,57 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import getThreads from "../APIs/getThreads"; 
 import AddNewTheadComponent from "./AddNewThreadComponent";
+import type { ThreadsInfo } from "../APIs/const";
+
+import './threadStyle.css';
 
 function ThreadPage(){
     const { topicsName } = useParams();
 
     const threadsRequest = useQuery({
-        queryKey: ['threads', topicsName],
+        queryKey: ['threads'],
         queryFn: () => getThreads(topicsName!),
     })
 
     return (
         <div>
-            <div>{threadsRequest?.data?.topicsName}</div>
-            <div>{threadsRequest?.data?.description}</div>
-            <AddNewTheadComponent />
+            <div className='mainContent'>
+                <div className='font-black'>{threadsRequest?.data?.topicsName}</div>
+                <div>{threadsRequest?.data?.description}</div>
+            </div>
+            <AddNewTheadComponent topicsName={topicsName!}/>
+            <div className='bg-zinc-800 p-3 font-black'>Threads</div>
 
-            {threadsRequest?.data?.threads.map((thread, i) => {
+            {threadsRequest?.data?.threads.map((thread) => {
                 return (
-                    <div key={i}>{thread.title}</div>
+                    <ThreadsTitle thread={thread}/>
                 )
             })}
+        </div>
+    )
+}
+
+function ThreadsTitle({thread} :{thread: ThreadsInfo}){
+
+    const navigation = useNavigate();
+
+    return (
+        <div className="container temp">
+            <div className='w-160'>
+                <div onClick={() => navigation(`/posts/${thread.title}`)}>{thread.title}</div>
+                <div>{thread.dateOfCreation}</div>
+            </div>
+
+            <div>
+                <div>Upvotes: {thread.upvoteCount}</div>
+                <div>Comments: {thread.commentCount}</div>
+            </div>
+            <div>
+                <div>{thread.username}</div>
+                <div>{thread.lastOnline}</div>
+            </div>
         </div>
     )
 }

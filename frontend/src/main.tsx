@@ -22,7 +22,7 @@ export const queryClient = new QueryClient({
 const MainPage = lazy(() => import('./MainPage'));
 const ForumPage = lazy(() => import('./Forum/ForumPage'));
 const ThreadPage = lazy(() => import('./Treads/ThreadPage'));
-/*const RulesPage = lazy(() => import('./TopBar/Rules/RulesPage'));*/
+const PostPage = lazy(() => import('./Post/PostPage'));
 const ProfilePage = lazy(() => import('./Profile/ProfileModal'));
 const InboxPage = lazy(() => import('./TopBar/InboxPage'));
 
@@ -34,8 +34,9 @@ function App(){
           <Routes>
             <Route path="/" element={<MainPage />}>
               <Route path='' element={<ForumPage />}/>
-              {/*<Route path='rules' element={<RulesPage />}/>*/}
+              <Route path='threads/rules' element={<ThreadPage />}/>
               <Route path='threads/:topicsName' element={<ThreadPage />} />
+              <Route path='posts/:threadsName' element={<PostPage />} />
               <Route path='profile' element={<ProfilePage />}/>
               <Route path='inbox' element={<InboxPage />}/>
             </Route>

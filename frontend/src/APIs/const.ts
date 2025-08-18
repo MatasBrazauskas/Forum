@@ -50,3 +50,9 @@ export type ThreadsDTO = {
     description: string,
     threads: ThreadsInfo[],
 }
+
+export type AddThreadDTO = {
+    topicsName: string,
+    title: string,
+    content: string,
+}

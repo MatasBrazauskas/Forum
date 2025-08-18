@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 public class AddThreadInfoDTO
 {
-    private Topics topic;
     private String title;
     private String content;
 }

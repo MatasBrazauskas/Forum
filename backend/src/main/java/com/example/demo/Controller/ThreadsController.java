@@ -5,9 +5,11 @@ import com.example.demo.DTOs.GettingThreadsDTO;
 import com.example.demo.Entities.Comment;
 import com.example.demo.Entities.Thread;
 import com.example.demo.DTOs.ThreadsDTO;
+import com.example.demo.Entities.Topics;
 import com.example.demo.Repository.ThreadsRepository;
 import com.example.demo.Repository.TopicsRepository;
 import com.example.demo.Repository.UserProfileRepository;
+import com.example.demo.Service.ThreadsService;
 import com.example.demo.Service.TopicsService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -26,47 +28,29 @@ import java.util.List;
 @Slf4j
 public class ThreadsController
 {
-    private final ThreadsRepository threadsRepo;
-    private final TopicsRepository topicsRepo;
-    private final UserProfileRepository userProfileRepo;
-    private final ModelMapper mapper;
 
+    private final ThreadsService threadsService;
 
-    public ThreadsController(ThreadsRepository threadsRepo,  TopicsRepository topicsRepository, ModelMapper mapper, UserProfileRepository userProfileRepository){
-        this.threadsRepo = threadsRepo;
-        this.topicsRepo = topicsRepository;
-        this.mapper = mapper;
-        this.userProfileRepo = userProfileRepository;
+    public ThreadsController(ThreadsService threadsService)
+    {
+        this.threadsService = threadsService;
     }
 
     @Transactional
     @GetMapping("/{topicsName}")
     public ResponseEntity<GettingThreadsDTO> getTopicsThreads(@PathVariable("topicsName") String topicsName)
     {
-        log.info("Getting threads for topics {}", topicsName);
-        final var topic = topicsRepo.findByTopicsName(topicsName).orElseThrow(() -> new RuntimeException("Topics not found"));
-        topic.getThreads();
-
-        var threadInfo = new GettingThreadsDTO();
-
-        threadInfo.setTopicsName(topic.getTopicsName());
-        threadInfo.setDescription(topic.getDescription());
-        threadInfo.setThreads(topic.getThreads().stream().map(th -> mapper.map(th, ThreadsDTO.class)).toList());
-
+        log.info("Getting threads for topic {}", topicsName);
+        var threadInfo = threadsService.getThreadsInfo(topicsName);
         return ResponseEntity.ok(threadInfo);
     }
 
     @Transactional
     @PostMapping("/{topicsName}")
-    public ResponseEntity<?> addNewThread(@PathVariable("topicsName") String topicsName,@RequestBody AddThreadInfoDTO  addThreadInfoDTO)
+    public ResponseEntity<?> addNewThread(@PathVariable("topicsName") String topicsName, @RequestBody AddThreadInfoDTO  addThreadInfoDTO)
     {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        final var email =  authentication.getPrincipal().toString();
-
-        var userProfile = userProfileRepo.findByEmail(email);
-
-        var newThread = new Thread(userProfile, addThreadInfoDTO.getTopic(), new ArrayList<Comment>(), addThreadInfoDTO.getTitle(), addThreadInfoDTO.getContent(), LocalDate.now(), 0, 0);
-
+        log.info("Adding threads for topic {}", topicsName);
+        threadsService.addNewThread(topicsName, addThreadInfoDTO);
         return ResponseEntity.ok().build();
     }
 }
