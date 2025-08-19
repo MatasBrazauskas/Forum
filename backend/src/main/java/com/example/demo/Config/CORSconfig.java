@@ -7,6 +7,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.Arrays;
+
 @Configuration
 @EnableCaching
 @PropertySource("constants.properties")
@@ -18,10 +20,10 @@ public class CORSconfig implements WebMvcConfigurer
     @Override
     public void addCorsMappings(CorsRegistry corsRegistry)
     {
-        corsRegistry.addMapping("/**")
-            .allowedOrigins(allowedOrigins)
+        corsRegistry.addMapping("/**").allowedOriginPatterns("http://localhost:5173")
             .allowedMethods("*")
             .allowedHeaders("*")
+                .allowCredentials(true)
             .allowCredentials(true)
             .maxAge(3600);
     }

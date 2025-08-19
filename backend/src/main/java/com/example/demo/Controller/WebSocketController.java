@@ -8,9 +8,14 @@ import org.springframework.stereotype.Controller;
 public class WebSocketController
 {
     @MessageMapping("/comment")
-    @SendTo("topics/comments")
-    public String sendMessage(String message)
-    {
-        return message;
+    @SendTo("/topic/comments")
+    public String comment(String comment){
+        return comment;
+    }
+
+    @MessageMapping("/typing")
+    @SendTo("topic/typing")
+    public String typing(String username){
+        return String.format("{} is typing ...", username);
     }
 }
