@@ -18,4 +18,6 @@ public class GetCommentsDTO
     private int postCount;
     private int reputation;
     private String comment;
+
+    private long commentId;
 }

@@ -1,11 +1,12 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { useRef } from 'react';
 
 import { useWebSocketComment } from "../Hooks/useWebSocketComment";
 import getPosts from "../APIs/getPosts";
+import type { AddCommentDTO } from "../APIs/const";
 
 function PostPage(){
-    const { comments, } = useWebSocketComment();
     const { threadsName } = useParams();
 
 
@@ -31,7 +32,32 @@ function PostPage(){
                     </div>
                 )
             })}
+
+            <AddNewComment />
         </div>
+    )
+}
+
+function AddNewComment(){
+
+    const { sendComment } = useWebSocketComment();
+    const comment = useRef(null);
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const data: AddCommentDTO = {
+
+        }
+
+        sendComment();
+    }
+
+    return (
+        <form onSubmit={(e) => handleSubmit(e)}>
+            <input type='text' ref={comment} placeholder='Enter comment'/>
+            <button type='submit'>Sumbit</button>
+        </form>
     )
 }
 

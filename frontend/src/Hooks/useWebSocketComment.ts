@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client/dist/sockjs'; // Import the SockJS client
 
+import { type AddCommentDTO } from '../APIs/const';
+
 export function useWebSocketComment() {
     const [comments, setComment] = useState<string[]>([]);
     const [typing, setTyping] = useState<string[]>([]);
@@ -57,11 +59,11 @@ export function useWebSocketComment() {
 
     }, []);
 
-    function sendComment(text: string) {
+    function sendComment(obj: AddCommentDTO) {
         if (stompClientRef.current && stompClientRef.current.connected) {
             stompClientRef.current.publish({
                 destination: "/app/comment",
-                body: text,
+                body: JSON.stringify(obj),
             });
         }
     }

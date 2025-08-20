@@ -54,7 +54,9 @@ public class ModelMapperConfig
                 .addMapping(t -> t.getReply(), GetCommentsDTO::setReply)
                 .addMapping(t -> t.getThread().getUserProfile().getPostCount(), GetCommentsDTO::setPostCount)
                 .addMapping(t -> t.getThread().getUserProfile().getReputation(), GetCommentsDTO::setReputation)
-                .addMapping(t -> t.getComment(), GetCommentsDTO::setComment);
+                .addMapping(t -> t.getComment(), GetCommentsDTO::setComment)
+                .addMapping(t -> t.getId(), GetCommentsDTO::setCommentId);
+
 
 
         return modelMapper;

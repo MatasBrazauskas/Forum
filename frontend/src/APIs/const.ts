@@ -73,5 +73,13 @@ export type PostInfo = {
     dateOfCreation: string,
     commentCount: number,
     upvoteCount: number,
+    commentId: number
     comments: CommentInfo[],
+}
+
+export type AddCommentDTO = {
+    threadName: string;
+    comment: string;
+    commentId: number;
+    replyTitle: string;
 }
