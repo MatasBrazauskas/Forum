@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "comments", indexes = {})
+@Table(name = "comments")
 @Data
 @NoArgsConstructor
 public class Comment

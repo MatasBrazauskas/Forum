@@ -1,40 +1,59 @@
 import { useState, useRef, useEffect } from 'react';
-import { Client, type IMessage } from '@stomp/stompjs'; 
+import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client/dist/sockjs'; // Import the SockJS client
 
-export function useWebSocketComment(){
+export function useWebSocketComment() {
     const [comments, setComment] = useState<string[]>([]);
     const [typing, setTyping] = useState<string[]>([]);
 
-    const stompClientRef = useRef<Client>(null);
+    const stompClientRef = useRef<any>(null);
+    const typingTimeoutRef = useRef<any>(null); // Ref to hold the timeout
 
     useEffect(() => {
-        const socket = new WebSocket('http://localhost:8080/ws');
+        // Use a SockJS client to connect to the backend
+        const socket = new SockJS('http://localhost:8080/ws');
+
         const client = new Client({
             webSocketFactory: () => socket,
             reconnectDelay: 5000,
-            debug: (msg: string) => console.error(msg),
-        })
+            debug: (msg) => console.log(msg),
+        });
 
         client.onConnect = () => {
-            console.log('Connecter');
+            console.log('Connected to WebSocket!');
 
-            client.subscribe('/topic/comment', (message: IMessage) => {
+            // Corrected destination name: "/topic/comments"
+            client.subscribe('/topic/comments', (message) => {
                 setComment(prev => [...prev, message.body]);
-            })
+            });
 
-            client.subscribe('topic/typing', (message: IMessage) => {
-                setTyping(prev => [...prev, message.body]);
-            })
+            // Corrected destination name: "/topic/typing"
+            client.subscribe('/topic/typing', (message) => {
+                setTyping(_ => [message.body]); // Only show the latest typing user
+                // Clear any existing timeout
+                if (typingTimeoutRef.current) {
+                    clearTimeout(typingTimeoutRef.current);
+                }
+                // Set a new timeout to clear the typing status after a short delay
+                typingTimeoutRef.current = setTimeout(() => {
+                    setTyping([]);
+                }, 3000);
+            });
+        };
 
-            setTimeout(() => setTyping([]), 3000);
-        }
+        client.onStompError = (frame) => {
+            console.error('Broker reported error: ' + frame.headers['message']);
+            console.error('Additional details: ' + frame.body);
+        };
 
         client.activate();
         stompClientRef.current = client;
 
         return () => {
-            client.deactivate();
-        }
+            if (stompClientRef.current) {
+                stompClientRef.current.deactivate();
+            }
+        };
 
     }, []);
 
@@ -57,5 +76,4 @@ export function useWebSocketComment(){
     }
 
     return { comments, typing, sendComment, sendTyping };
-
 }

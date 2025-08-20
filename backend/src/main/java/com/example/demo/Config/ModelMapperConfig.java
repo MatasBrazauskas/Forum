@@ -1,16 +1,18 @@
 package com.example.demo.Config;
 
-import com.example.demo.DTOs.ProfileInfoDTO;
+import com.example.demo.DTOs.*;
+import com.example.demo.Entities.Comment;
 import com.example.demo.Entities.Thread;
-import com.example.demo.DTOs.ThreadsDTO;
-import com.example.demo.DTOs.TopicsDTO;
 import com.example.demo.Entities.Topics;
 import com.example.demo.Entities.UserProfile;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+
+import java.util.List;
 
 @Configuration
 public class ModelMapperConfig
@@ -45,6 +47,15 @@ public class ModelMapperConfig
                 .addMapping(th -> th.getDateOfCreation(), ThreadsDTO::setDateOfCreation)
                 .addMapping(th -> th.getCommentCount(), ThreadsDTO::setCommentCount)
                 .addMapping(th -> th.getUpvoteCount(), ThreadsDTO::setUpvoteCount);
+
+        modelMapper.createTypeMap(Comment.class, GetCommentsDTO.class)
+                .addMapping(t -> t.getCommentatorProfile().getUsername(), GetCommentsDTO::setUsername)
+                .addMapping(t -> t.getDateOfComment(), GetCommentsDTO::setDateOfCreation)
+                .addMapping(t -> t.getReply(), GetCommentsDTO::setReply)
+                .addMapping(t -> t.getThread().getUserProfile().getPostCount(), GetCommentsDTO::setPostCount)
+                .addMapping(t -> t.getThread().getUserProfile().getReputation(), GetCommentsDTO::setReputation)
+                .addMapping(t -> t.getComment(), GetCommentsDTO::setComment);
+
 
         return modelMapper;
     }
