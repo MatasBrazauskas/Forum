@@ -5,6 +5,8 @@ abstract class CustomError extends Error{
     }
 }
 
+const temp = new Error();
+
 class UnauthorizedError extends CustomError {
 
     constructor(path: string, additionalInfo: string){
