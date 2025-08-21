@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import com.example.demo.Exceptions.CustomExceptions;
 
 import java.io.IOException;
 
@@ -35,8 +36,7 @@ public class RateLimiterFilter extends OncePerRequestFilter {
 
         if (!counter.isAllowed(uuid, role)) {
             log.warn("Illegal Rate limiter - role: {}, uuid: {}", role, uuid);
-            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-            return;
+            throw new CustomExceptions.RateLimitException("Illegal Rate limiter - role: " + role);
         }
 
         filterChain.doFilter(request, response);

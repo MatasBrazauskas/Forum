@@ -4,11 +4,10 @@ import { useRef } from 'react';
 
 import { useWebSocketComment } from "../Hooks/useWebSocketComment";
 import getPosts from "../APIs/getPosts";
-import type { AddCommentDTO } from "../APIs/const";
+import { type AddCommentDTO } from "../Types/RequestDTOs";
 
 function PostPage(){
     const { threadsName } = useParams();
-
 
     const postQuery = useQuery({
         queryKey: ['posts'],

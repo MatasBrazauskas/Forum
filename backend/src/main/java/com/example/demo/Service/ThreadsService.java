@@ -1,11 +1,9 @@
 package com.example.demo.Service;
 
-import com.example.demo.DTOs.AddThreadInfoDTO;
-import com.example.demo.DTOs.GettingThreadsDTO;
+import com.example.demo.DTOs.AddThreadDTO;
+import com.example.demo.DTOs.GetThreadsDTO;
 import com.example.demo.DTOs.ThreadsDTO;
-import com.example.demo.Entities.Comment;
 import com.example.demo.Entities.Thread;
-import com.example.demo.Entities.Topics;
 import com.example.demo.Repository.ThreadsRepository;
 import com.example.demo.Repository.TopicsRepository;
 import com.example.demo.Repository.UserProfileRepository;
@@ -37,12 +35,12 @@ public class ThreadsService
     }
 
     @Transactional
-    public GettingThreadsDTO getThreadsInfo(String topicsName)
+    public GetThreadsDTO getThreadsInfo(String topicsName)
     {
         final var topic = topicsRepo.findByTopicsName(topicsName).orElseThrow(() -> new RuntimeException("Topics not found"));
         topic.getThreads();
 
-        var threadInfo = new GettingThreadsDTO();
+        var threadInfo = new GetThreadsDTO();
 
         threadInfo.setTopicsName(topic.getTopicsName());
         threadInfo.setDescription(topic.getDescription());
@@ -52,20 +50,20 @@ public class ThreadsService
     }
 
     @Transactional
-    public void addNewThread(String topicsName, AddThreadInfoDTO  addThreadInfoDTO)
+    public void addNewThread(AddThreadDTO addThreadDTO)
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         final var email =  authentication.getPrincipal().toString();
 
         var userProfile = userProfileRepo.findByEmail(email);
-        var topic = topicsRepo.findByTopicsName(topicsName).orElseThrow(() -> new RuntimeException("Topics not found"));
+        var topic = topicsRepo.findByTopicsName(addThreadDTO.getTopicsName()).orElseThrow(() -> new RuntimeException("Topics not found"));
 
         var thread = new Thread();
         thread.setUserProfile(userProfile);
         thread.setTopics(topic);
         thread.setComments(new ArrayList<>());
-        thread.setTitle(addThreadInfoDTO.getTitle());
-        thread.setContent(addThreadInfoDTO.getContent());
+        thread.setTitle(addThreadDTO.getTitle());
+        thread.setContent(addThreadDTO.getContent());
         thread.setDateOfCreation(LocalDate.now());
         thread.setCommentCount(0);
         thread.setUpvoteCount(0);

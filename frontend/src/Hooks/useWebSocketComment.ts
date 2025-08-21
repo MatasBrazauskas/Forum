@@ -12,7 +12,6 @@ export function useWebSocketComment() {
     const typingTimeoutRef = useRef<any>(null);
 
     useEffect(() => {
-        // Use a SockJS client to connect to the backend
         const socket = new SockJS('http://localhost:8080/ws');
 
         const client = new Client({

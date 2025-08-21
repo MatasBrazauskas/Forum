@@ -1,8 +1,7 @@
 package com.example.demo.Service;
 
-import com.example.demo.DTOs.PartialProfileInfoDTO;
 import com.example.demo.DTOs.ProfileInfoDTO;
-import com.example.demo.DTOs.RegisterDTO;
+import com.example.demo.DTOs.CreateUserCookiesDTO;
 import com.example.demo.Entities.UserProfile;
 import com.example.demo.Middleware.CookieFactory;
 import com.example.demo.Middleware.JWTutils;
@@ -10,7 +9,6 @@ import com.example.demo.Repository.UserProfileRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -33,13 +31,13 @@ public class CookieService
     }
 
     @Transactional
-    public ResponseEntity<ProfileInfoDTO> registerUser(HttpServletResponse response, RegisterDTO registerDTO)
+    public ResponseEntity<ProfileInfoDTO> registerUser(HttpServletResponse response, CreateUserCookiesDTO createUserCookiesDTO)
     {
-        var user = userProfileRepo.findByEmail(registerDTO.getEmail());
+        var user = userProfileRepo.findByEmail(createUserCookiesDTO.getEmail());
 
         if(user == null)
         {
-            user = new UserProfile(registerDTO.getUsername(), registerDTO.getEmail(), LocalDate.now(), LocalDate.now(), 0, 0, UserProfile.Role.USER);
+            user = new UserProfile(createUserCookiesDTO.getUsername(), createUserCookiesDTO.getEmail(), LocalDate.now(), LocalDate.now(), 0, 0, UserProfile.Role.USER);
             userProfileRepo.save(user);
         }
 

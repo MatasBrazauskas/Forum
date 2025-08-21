@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 
 @Component
@@ -24,15 +21,15 @@ public class JWTutils {
     private String SECRET_KEY;
 
     public String extractRole(String token) {
-        return (String)extractClaim(token, claims -> claims.get("role").toString());
+        return extractClaim(token, claims -> claims.get("role").toString());
     }
 
     public String extractUUID(String token) {
-        return (String)extractClaim(token, claims -> claims.get("uuid").toString());
+        return extractClaim(token, claims -> claims.get("uuid").toString());
     }
 
     public String extractEmail(String token) {
-        return (String)extractClaim(token, claims -> claims.get("email").toString());
+        return extractClaim(token, claims -> claims.get("email").toString());
     }
 
     public Boolean validateToken(String token) {

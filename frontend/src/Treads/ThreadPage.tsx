@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import getThreads from "../APIs/getThreads"; 
 import AddNewTheadComponent from "./AddNewThreadComponent";
-import type { ThreadsInfo } from "../APIs/const";
+import { type GetThreadsDTO } from "../Types/ResponseDTOs";
 
 import './threadStyle.css';
 

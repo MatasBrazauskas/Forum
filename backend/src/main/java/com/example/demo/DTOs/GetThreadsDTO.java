@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class GettingThreadsDTO
+public class GetThreadsDTO
 {
     private String topicsName;
     private String description;

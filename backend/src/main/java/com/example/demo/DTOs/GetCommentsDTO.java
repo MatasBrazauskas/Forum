@@ -4,8 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
+//?????????????????????????????????
 @Data
 @NoArgsConstructor
 public class GetCommentsDTO
@@ -19,5 +19,5 @@ public class GetCommentsDTO
     private String comment;
 
     private String reply;
-    private long commentId;
+    private Long replyId;
 }

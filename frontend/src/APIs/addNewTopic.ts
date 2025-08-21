@@ -1,5 +1,5 @@
-import { HTTP_CODES, type AddTopicsDTO } from "./const";
-import { TOPICS_REQUEST } from "./const";
+import { HTTP_CODES, TOPICS_REQUEST } from "./const";
+import { type AddTopicsDTO } from "../Types/RequestDTOs";
 
 async function addNewTopic(addTopic: AddTopicsDTO){
     try{

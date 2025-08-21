@@ -1,14 +1,15 @@
-import { HTTP_CODES, THREADS_REQUEST, type AddThreadDTO } from "./const";
+import { HTTP_CODES, THREADS_REQUEST } from "./const";
+import { type AddThreadDTO } from "../Types/RequestDTOs";
 
-async function addNewThread({topicsName, title, content}: AddThreadDTO ): Promise<null | undefined>{
+async function addNewThread(addThreadDTO: AddThreadDTO ): Promise<null | undefined>{
     try{
-        const response = await fetch(`${THREADS_REQUEST}/${topicsName}`, {
+        const response = await fetch(THREADS_REQUEST, {
             method: 'POST',
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ title: title, content: content}), 
+            body: JSON.stringify(addThreadDTO), 
         });
 
         console.warn(response);

@@ -32,7 +32,7 @@ public final class JWTfilter extends OncePerRequestFilter
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, CustomExceptions.JWTMissing, java.io.IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, java.io.IOException {
         final var persistentCookieJWT = request.getAttribute(MiddlewareUtils.persistentCookieName);
         final String sessionCookieJWT = request.getAttribute(MiddlewareUtils.sessionCookieName).toString();
 

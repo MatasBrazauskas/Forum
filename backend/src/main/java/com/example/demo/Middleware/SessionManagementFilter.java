@@ -1,6 +1,7 @@
 package com.example.demo.Middleware;
 
 import com.example.demo.Entities.UserProfile;
+import com.example.demo.Exceptions.CustomExceptions;
 import com.example.demo.Repository.UserProfileRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -49,9 +50,11 @@ public class SessionManagementFilter extends OncePerRequestFilter
 
                 role = user.getRole().toString();
             }
+
             final String newSessionJWT = cookieFactory.addSessionCookie(response, role);
             request.setAttribute(MiddlewareUtils.sessionCookieName, newSessionJWT);
         }
+
         filterChain.doFilter(request, response);
     }
 }

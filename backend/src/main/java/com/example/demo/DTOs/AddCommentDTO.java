@@ -4,6 +4,7 @@ import com.example.demo.Entities.Comment;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/// /////////////////////////
 @Data
 @NoArgsConstructor
 public class AddCommentDTO

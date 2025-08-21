@@ -1,7 +1,7 @@
 package com.example.demo.Service;
 
-import com.example.demo.DTOs.AddTopicsInfoDTO;
-import com.example.demo.DTOs.TopicsDTO;
+import com.example.demo.DTOs.AddTopicsDTO;
+import com.example.demo.DTOs.GetTopicsDTO;
 import com.example.demo.Entities.Topics;
 import com.example.demo.Repository.TopicsRepository;
 import com.example.demo.Repository.UserProfileRepository;
@@ -30,12 +30,12 @@ public class TopicsService
         this.userProfileRepo = userProfileRepository;
     }
 
-    public ResponseEntity<List<TopicsDTO>> getTopics() {
-        List<TopicsDTO> topics = topicsRepo.findAll().stream().map(tp -> mapper.map(tp, TopicsDTO.class)).toList();
+    public ResponseEntity<List<GetTopicsDTO>> getTopics() {
+        List<GetTopicsDTO> topics = topicsRepo.findAll().stream().map(tp -> mapper.map(tp, GetTopicsDTO.class)).toList();
         return ResponseEntity.ok().body(topics);
     }
 
-    public ResponseEntity<Void> addNewTopic(AddTopicsInfoDTO addTopicsInfo)
+    public ResponseEntity<Void> addNewTopic(AddTopicsDTO addTopicsInfo)
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         final var email=  authentication.getPrincipal().toString();

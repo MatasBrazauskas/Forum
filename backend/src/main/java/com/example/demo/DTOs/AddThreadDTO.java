@@ -1,11 +1,12 @@
 package com.example.demo.DTOs;
 
-import com.example.demo.Entities.Topics;
 import lombok.Data;
 
+/// //////////////////////
 @Data
-public class AddThreadInfoDTO
+public class AddThreadDTO
 {
+    private String topicsName;
     private String title;
     private String content;
 }

@@ -1,6 +1,7 @@
-import { HTTP_CODES, POST_REQUEST, type PostInfo } from "./const";
+import { HTTP_CODES, POST_REQUEST } from "./const";
+import { type GetPostDTO} from "../Types/ResponseDTOs";
 
-async function getPosts(threadsName: string): Promise<PostInfo>{
+async function getPosts(threadsName: string): Promise<GetPostDTO>{
     try{
         const response = await fetch(POST_REQUEST + `/${threadsName}`, {
             method: 'GET',

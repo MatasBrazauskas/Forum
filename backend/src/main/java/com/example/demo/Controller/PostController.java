@@ -1,15 +1,13 @@
 package com.example.demo.Controller;
 
 import com.example.demo.DTOs.GetCommentsDTO;
-import com.example.demo.DTOs.GetPostsDTO;
+import com.example.demo.DTOs.GetPostDTO;
 import com.example.demo.Repository.CommentRepository;
 import com.example.demo.Repository.ThreadsRepository;
 import com.example.demo.Repository.UserProfileRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,12 +31,12 @@ public class PostController
 
     @Transactional
     @GetMapping("/{threadsName}")
-    public ResponseEntity<?> getPosts(@PathVariable("threadsName") String threadsName){
+    public ResponseEntity<GetPostDTO> getPosts(@PathVariable("threadsName") String threadsName){
         var thread = threadsRepo.findThreadByTitle(threadsName).orElse(null);
         var user = thread.getUserProfile();
         var com = thread.getComments();
 
-        var postsDTO = new  GetPostsDTO();
+        var postsDTO = new GetPostDTO();
         postsDTO.setUsername(user.getUsername());
         postsDTO.setTitle(thread.getTitle());
         postsDTO.setDateOfCreation(thread.getDateOfCreation());

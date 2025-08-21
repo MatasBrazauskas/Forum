@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TopicsDTO
+public class GetTopicsDTO
 {
     private String topicsName;
     private String username;

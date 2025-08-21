@@ -2,7 +2,7 @@ import { useReducer, useRef } from "react";
 
 import { queryClient } from "../main";
 import '../Forum/DropDownStyle.css';
-import { type AddThreadDTO } from "../APIs/const";
+import { type AddThreadDTO } from "../Types/RequestDTOs";
 import addNewThread from "../APIs/addNewThread";
 
 function AddNewTheadComponent({topicsName}: {topicsName: string}){

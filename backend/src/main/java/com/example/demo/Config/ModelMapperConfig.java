@@ -5,14 +5,10 @@ import com.example.demo.Entities.Comment;
 import com.example.demo.Entities.Thread;
 import com.example.demo.Entities.Topics;
 import com.example.demo.Entities.UserProfile;
-import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-
-import java.util.List;
 
 @Configuration
 public class ModelMapperConfig
@@ -31,14 +27,14 @@ public class ModelMapperConfig
                 .addMapping(user -> user.getPostCount(), ProfileInfoDTO::setPostCount)
                 .addMapping(user -> user.getReputation(), ProfileInfoDTO::setReputation);
 
-        modelMapper.createTypeMap(Topics.class, TopicsDTO.class)
-                .addMapping(tp -> tp.getTopicsName(), TopicsDTO::setTopicsName)
-                .addMapping(tp -> tp.getCreator().getUsername(), TopicsDTO::setUsername)
-                .addMapping(tp -> tp.getCreated(), TopicsDTO::setCreated)
-                .addMapping(tp -> tp.getDescription(), TopicsDTO::setDescription)
-                .addMapping(tp -> tp.getThreadCount(), TopicsDTO::setThreadCount)
-                .addMapping(tp -> tp.getPostCount(), TopicsDTO::setPostCount)
-                .addMapping(tp -> tp.getTopicType(), TopicsDTO::setTopicType);
+        modelMapper.createTypeMap(Topics.class, GetTopicsDTO.class)
+                .addMapping(tp -> tp.getTopicsName(), GetTopicsDTO::setTopicsName)
+                .addMapping(tp -> tp.getCreator().getUsername(), GetTopicsDTO::setUsername)
+                .addMapping(tp -> tp.getCreated(), GetTopicsDTO::setCreated)
+                .addMapping(tp -> tp.getDescription(), GetTopicsDTO::setDescription)
+                .addMapping(tp -> tp.getThreadCount(), GetTopicsDTO::setThreadCount)
+                .addMapping(tp -> tp.getPostCount(), GetTopicsDTO::setPostCount)
+                .addMapping(tp -> tp.getTopicType(), GetTopicsDTO::setTopicType);
 
         modelMapper.createTypeMap(Thread.class, ThreadsDTO.class)
                 .addMapping(th -> th.getUserProfile().getUsername(), ThreadsDTO::setUsername)
@@ -55,7 +51,7 @@ public class ModelMapperConfig
                 .addMapping(t -> t.getThread().getUserProfile().getPostCount(), GetCommentsDTO::setPostCount)
                 .addMapping(t -> t.getThread().getUserProfile().getReputation(), GetCommentsDTO::setReputation)
                 .addMapping(t -> t.getComment(), GetCommentsDTO::setComment)
-                .addMapping(t -> t.getId(), GetCommentsDTO::setCommentId);
+                .addMapping(t -> t.getId(), GetCommentsDTO::setReplyId);
 
 
 
