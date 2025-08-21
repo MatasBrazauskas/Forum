@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Client } from '@stomp/stompjs';
-import SockJS from 'sockjs-client/dist/sockjs'; // Import the SockJS client
+import SockJS from 'sockjs-client/dist/sockjs';
 
 import { type AddCommentDTO } from '../APIs/const';
 
@@ -9,7 +9,7 @@ export function useWebSocketComment() {
     const [typing, setTyping] = useState<string[]>([]);
 
     const stompClientRef = useRef<Client>(null);
-    const typingTimeoutRef = useRef<any>(null); // Ref to hold the timeout
+    const typingTimeoutRef = useRef<any>(null);
 
     useEffect(() => {
         // Use a SockJS client to connect to the backend
@@ -26,20 +26,15 @@ export function useWebSocketComment() {
 
         client.onConnect = () => {
             console.log('Connected to WebSocket!');
-
-            // Corrected destination name: "/topic/comments"
             client.subscribe('/topic/comments', (message) => {
                 setComment(prev => [...prev, message.body]);
             });
 
-            // Corrected destination name: "/topic/typing"
             client.subscribe('/topic/typing', (message) => {
-                setTyping(_ => [message.body]); // Only show the latest typing user
-                // Clear any existing timeout
+                setTyping(_ => [message.body]); 
                 if (typingTimeoutRef.current) {
                     clearTimeout(typingTimeoutRef.current);
                 }
-                // Set a new timeout to clear the typing status after a short delay
                 typingTimeoutRef.current = setTimeout(() => {
                     setTyping([]);
                 }, 3000);
