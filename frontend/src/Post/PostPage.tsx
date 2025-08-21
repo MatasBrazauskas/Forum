@@ -16,6 +16,23 @@ function PostPage(){
         staleTime: 60 * 10 * 1000,
     })
 
+    const { sendComment } = useWebSocketComment();    
+    const comment = useRef<HTMLInputElement>(null);
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const data: AddCommentDTO = {
+            threadName: threadsName!,
+            comment: comment?.current?.value!,
+            replyId: -1,
+        }
+
+        console.warn('Sending data with WebSocket');
+
+        sendComment(data);
+    }
+
     return (
         <div>
             <div>{postQuery?.data?.title}</div>
@@ -33,31 +50,13 @@ function PostPage(){
                 )
             })}
 
-            <AddNewComment />
+
+            <form onSubmit={(e) => handleSubmit(e)}>
+                <input type='text' ref={comment} placeholder='Enter comment'/>
+                <button type='submit'>Sumbit</button>
+            </form>
+
         </div>
-    )
-}
-
-function AddNewComment(){
-
-    const { sendComment } = useWebSocketComment();
-    const comment = useRef(null);
-
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        const data: AddCommentDTO = {
-
-        }
-
-        sendComment();
-    }
-
-    return (
-        <form onSubmit={(e) => handleSubmit(e)}>
-            <input type='text' ref={comment} placeholder='Enter comment'/>
-            <button type='submit'>Sumbit</button>
-        </form>
     )
 }
 

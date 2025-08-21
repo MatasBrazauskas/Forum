@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import userReducer from './userState';
+import errorsReducer from './errorState';
 
 const store = configureStore({
     reducer:{
         USER_INFO: userReducer,
+        ERRORS_INFO: errorsReducer,
     }
 });
 

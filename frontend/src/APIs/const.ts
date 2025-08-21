@@ -60,11 +60,17 @@ export type AddThreadDTO = {
     content: string,
 }
 
-export type CommentInfo = {
-    username: string,
-    reply: string,
-    comment: string,
-    dateOfCreation: string,
+export type GetCommentsDTO = {
+    username: string;
+    joined: string;
+    postCount: number;
+    reputation: number;
+
+    dateOfCreation: string;
+    comment: string;
+
+    reply: string;
+    commentId: number;
 }
 
 export type PostInfo = {
@@ -74,12 +80,11 @@ export type PostInfo = {
     commentCount: number,
     upvoteCount: number,
     commentId: number
-    comments: CommentInfo[],
+    comments: GetCommentsDTO[],
 }
 
 export type AddCommentDTO = {
     threadName: string;
     comment: string;
-    commentId: number;
-    replyTitle: string;
+    replyId: number;
 }

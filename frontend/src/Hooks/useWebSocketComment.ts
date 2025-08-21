@@ -8,7 +8,7 @@ export function useWebSocketComment() {
     const [comments, setComment] = useState<string[]>([]);
     const [typing, setTyping] = useState<string[]>([]);
 
-    const stompClientRef = useRef<any>(null);
+    const stompClientRef = useRef<Client>(null);
     const typingTimeoutRef = useRef<any>(null); // Ref to hold the timeout
 
     useEffect(() => {
@@ -17,6 +17,9 @@ export function useWebSocketComment() {
 
         const client = new Client({
             webSocketFactory: () => socket,
+            connectHeaders: {
+                Authorization: 'matasbrazauskas123456@gmail.com'
+            },
             reconnectDelay: 5000,
             debug: (msg) => console.log(msg),
         });
@@ -60,7 +63,9 @@ export function useWebSocketComment() {
     }, []);
 
     function sendComment(obj: AddCommentDTO) {
+        console.warn('Clicked')
         if (stompClientRef.current && stompClientRef.current.connected) {
+            console.log("Connected?", stompClientRef.current?.connected)
             stompClientRef.current.publish({
                 destination: "/app/comment",
                 body: JSON.stringify(obj),
@@ -73,6 +78,7 @@ export function useWebSocketComment() {
             stompClientRef.current.publish({
                 destination: "/app/typing",
                 body: username,
+                headers: { Authorization: "matasbrazauskas123456@gmail.com" },
             });
         }
     }

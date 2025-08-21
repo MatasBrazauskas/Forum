@@ -6,15 +6,18 @@ import com.example.demo.Repository.CommentRepository;
 import com.example.demo.Repository.ThreadsRepository;
 import com.example.demo.Repository.UserProfileRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
+import java.security.Principal;
 import java.time.LocalDate;
 
 @Controller
+@Slf4j
 public class WebSocketController
 {
     private final UserProfileRepository userProfileRepo;
@@ -30,22 +33,26 @@ public class WebSocketController
     @Transactional
     @MessageMapping("/comment")
     @SendTo("/topic/comments")
-    public void comment(AddCommentDTO addCommentDTO){
-        var threads = threadsRepo.findThreadByTitle(addCommentDTO.getThreadName()).orElse(null);
+    public Comment comment(AddCommentDTO addCommentDTO, Principal principal){
+        log.info("Adding a comment with WebSockets");
+        final var email =  principal.getName();
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        final var email =  authentication.getPrincipal().toString();
-        var user = userProfileRepo.findByEmail(email);
+        log.warn("This is users email: {}", email);
 
-        var comment = commentRepo.findById(addCommentDTO.getCommentId()).orElse(null);
+
+        final var threads = threadsRepo.findThreadByTitle(addCommentDTO.getThreadName()).orElse(null);
+        final var user = userProfileRepo.findByEmail(email);
+        final var reply = commentRepo.findById(addCommentDTO.getReplyId()).orElse(null);
 
         var com = new Comment();
 
         com.setCommentatorProfile(user);
         com.setThread(threads);
-        com.setReply(comment);
+        com.setReply(reply);
         com.setComment(addCommentDTO.getComment());
         com.setDateOfComment(LocalDate.now());
+
+        return commentRepo.save(com);
     }
 
     @MessageMapping("/typing")

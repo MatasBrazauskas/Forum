@@ -10,6 +10,5 @@ public class AddCommentDTO
 {
     private String threadName;
     private String comment;
-    private long commentId;
-    private String replyTitle;
+    private long replyId;
 }

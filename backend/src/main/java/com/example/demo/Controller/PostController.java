@@ -2,7 +2,7 @@ package com.example.demo.Controller;
 
 import com.example.demo.DTOs.GetCommentsDTO;
 import com.example.demo.DTOs.GetPostsDTO;
-import com.example.demo.Repository.PostRepository;
+import com.example.demo.Repository.CommentRepository;
 import com.example.demo.Repository.ThreadsRepository;
 import com.example.demo.Repository.UserProfileRepository;
 import jakarta.transaction.Transactional;
@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/post")
 public class PostController
 {
-    private final PostRepository postRepo;
+    private final CommentRepository commentRepo;
     private final ThreadsRepository threadsRepo;
     private final UserProfileRepository userProfileRepo;
     private final ModelMapper modelMapper;
 
-    public PostController(PostRepository postRepo, ThreadsRepository threadsRepo, UserProfileRepository userProfileRepo, ModelMapper modelMapper){
-        this.postRepo = postRepo;
+    public PostController(CommentRepository commentRepo, ThreadsRepository threadsRepo, UserProfileRepository userProfileRepo, ModelMapper modelMapper){
+        this.commentRepo = commentRepo;
         this.threadsRepo = threadsRepo;
         this.userProfileRepo = userProfileRepo;
         this.modelMapper = modelMapper;

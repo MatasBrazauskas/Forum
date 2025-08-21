@@ -11,13 +11,13 @@ import java.time.LocalDateTime;
 public class GetCommentsDTO
 {
     private String username;
-    private LocalDate dateOfCreation;
-
-    private String reply;
-
+    private LocalDate joined;
     private int postCount;
     private int reputation;
+
+    private LocalDate dateOfCreation;
     private String comment;
 
+    private String reply;
     private long commentId;
 }
