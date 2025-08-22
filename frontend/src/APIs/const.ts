@@ -14,7 +14,8 @@ export const POST_REQUEST = POSTS_CONTROLLER_URL;
 
 export enum HTTP_CODES {
     OK = 200,
-    BAD_REQUEST = 400,
     NO_CONTENT = 204,
+    BAD_REQUEST = 400,
     UNAUTHORIZED = 401,
+    NOT_FOUND = 404,
 }

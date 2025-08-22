@@ -14,4 +14,10 @@ public class GlobalExceptionHandler
     {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.TOO_MANY_REQUESTS);
     }
+
+    @ExceptionHandler(CustomExceptions.UserProfileNotFound.class)
+    public ResponseEntity<String> handleUserProfileNotFound(Exception ex)
+    {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
 }

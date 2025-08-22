@@ -3,8 +3,10 @@ package com.example.demo.Service;
 import com.example.demo.DTOs.AddTopicsDTO;
 import com.example.demo.DTOs.GetTopicsDTO;
 import com.example.demo.Entities.Topics;
+import com.example.demo.Exceptions.CustomExceptions;
 import com.example.demo.Repository.TopicsRepository;
 import com.example.demo.Repository.UserProfileRepository;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -35,12 +37,13 @@ public class TopicsService
         return ResponseEntity.ok().body(topics);
     }
 
+    @Transactional
     public ResponseEntity<Void> addNewTopic(AddTopicsDTO addTopicsInfo)
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        final var email=  authentication.getPrincipal().toString();
+        final var email = authentication.getPrincipal().toString();
 
-        var profile = userProfileRepo.findByEmail(email);
+        var profile = userProfileRepo.findByEmail(email).orElseThrow(() -> new CustomExceptions.UserProfileNotFound(email));
 
         var newTopic = new Topics();
         newTopic.setCreator(profile);

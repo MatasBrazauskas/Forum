@@ -7,4 +7,10 @@ public final class CustomExceptions
             super(message);
         }
     }
+
+    public static final class UserProfileNotFound extends RuntimeException{
+        public UserProfileNotFound(String message){
+            super(message);
+        }
+    }
 }

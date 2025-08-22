@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface TopicsRepository extends JpaRepository<Topics, Long>
 {
     @Transactional
-    public Optional<Topics> findByTopicsName(String topicsName);
+    Optional<Topics> findByTopicsName(String topicsName);
 }
