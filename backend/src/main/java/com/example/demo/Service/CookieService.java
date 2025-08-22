@@ -3,6 +3,7 @@ package com.example.demo.Service;
 import com.example.demo.DTOs.ProfileInfoDTO;
 import com.example.demo.DTOs.CreateUserCookiesDTO;
 import com.example.demo.Entities.UserProfile;
+import com.example.demo.Exceptions.CustomExceptions;
 import com.example.demo.Middleware.CookieFactory;
 import com.example.demo.Middleware.JWTutils;
 import com.example.demo.Repository.UserProfileRepository;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class CookieService
@@ -33,7 +35,7 @@ public class CookieService
     @Transactional
     public ResponseEntity<ProfileInfoDTO> registerUser(HttpServletResponse response, CreateUserCookiesDTO createUserCookiesDTO)
     {
-        var user = userProfileRepo.findByEmail(createUserCookiesDTO.getEmail());
+        var user = userProfileRepo.findByEmail(createUserCookiesDTO.getEmail()).orElseThrow(() -> new CustomExceptions.UserProfileNotFound("Email not found"));
 
         if(user == null)
         {

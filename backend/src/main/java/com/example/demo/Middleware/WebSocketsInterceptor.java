@@ -1,5 +1,6 @@
 package com.example.demo.Middleware;
 
+import com.example.demo.Exceptions.CustomExceptions;
 import com.example.demo.Repository.UserProfileRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.Message;
@@ -42,7 +43,7 @@ public class WebSocketsInterceptor implements ChannelInterceptor
             if (jwt != null) {
 
                 //final var email = jwtutils.extractEmail(jwt);
-                final var user = userProfileRepo.findByEmail(jwt);
+                final var user = userProfileRepo.findByEmail(jwt).orElseThrow(() -> new CustomExceptions.UserProfileNotFound("Email"));
                 log.warn("This is user :{}", user.getUsername());
 
                 Authentication auth = new UsernamePasswordAuthenticationToken(

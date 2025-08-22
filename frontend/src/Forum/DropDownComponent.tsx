@@ -9,7 +9,7 @@ import '../tailwind.css';
 function DropDownComponent({ title, topicsArray } : { title: string, topicsArray:GetTopicsDTO[]} ) {
 
     const [showThreads, setShowThreads] = useReducer((state: boolean) => {return !state;}, true);
-    const filteredThreadsArray = topicsArray.filter(i => i.topicsName.toLowerCase() === title.toLowerCase());
+    const filteredThreadsArray = topicsArray;//?.filter(i => i.topicsName.toLowerCase() === title.toLowerCase());
 
     return (
         <div>
@@ -17,12 +17,13 @@ function DropDownComponent({ title, topicsArray } : { title: string, topicsArray
 
             {showThreads && 
             <div>
-                {filteredThreadsArray.map((topics, i) => {
+                {filteredThreadsArray?.map((topics, i) => {
                     return (
                         <DropDownItem topics={topics} i={i} />
                     )
                 })}
-            </div>}
+            </div>
+            }
         </div>
     )
 }

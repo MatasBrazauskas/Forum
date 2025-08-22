@@ -44,7 +44,7 @@ public class SessionManagementFilter extends OncePerRequestFilter
             if(persistentJWT != null){
                 final String email = jwtUtils.extractEmail(persistentJWT);
 
-                var user = userProfileRepo.findByEmail(email);
+                var user = userProfileRepo.findByEmail(email).orElseThrow(( ) -> new CustomExceptions.UserProfileNotFound("Email not found"));
                 user.setLastOnline(LocalDate.now());
                 userProfileRepo.save(user);
 

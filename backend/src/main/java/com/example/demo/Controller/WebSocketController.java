@@ -2,6 +2,7 @@ package com.example.demo.Controller;
 
 import com.example.demo.DTOs.AddCommentDTO;
 import com.example.demo.Entities.Comment;
+import com.example.demo.Exceptions.CustomExceptions;
 import com.example.demo.Repository.CommentRepository;
 import com.example.demo.Repository.ThreadsRepository;
 import com.example.demo.Repository.UserProfileRepository;
@@ -41,7 +42,7 @@ public class WebSocketController
 
 
         final var threads = threadsRepo.findThreadByTitle(addCommentDTO.getThreadName()).orElse(null);
-        final var user = userProfileRepo.findByEmail(email);
+        final var user = userProfileRepo.findByEmail(email).orElseThrow(() -> new CustomExceptions.UserProfileNotFound("User not found"));
         final var reply = commentRepo.findById(addCommentDTO.getReplyId()).orElse(null);
 
         var com = new Comment();

@@ -4,6 +4,7 @@ import com.example.demo.DTOs.AddThreadDTO;
 import com.example.demo.DTOs.GetThreadsDTO;
 import com.example.demo.DTOs.ThreadsDTO;
 import com.example.demo.Entities.Thread;
+import com.example.demo.Exceptions.CustomExceptions;
 import com.example.demo.Repository.ThreadsRepository;
 import com.example.demo.Repository.TopicsRepository;
 import com.example.demo.Repository.UserProfileRepository;
@@ -55,7 +56,7 @@ public class ThreadsService
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         final var email =  authentication.getPrincipal().toString();
 
-        var userProfile = userProfileRepo.findByEmail(email);
+        var userProfile = userProfileRepo.findByEmail(email).orElseThrow(() -> new CustomExceptions.UserProfileNotFound("Email not found"));
         var topic = topicsRepo.findByTopicsName(addThreadDTO.getTopicsName()).orElseThrow(() -> new RuntimeException("Topics not found"));
 
         var thread = new Thread();

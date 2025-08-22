@@ -11,7 +11,6 @@ async function getTopics(): Promise<GetTopicsDTO[]>{
             }
         }); 
 
-
         if(response.status === HTTP_CODES.OK){
             return await response.json();
         }
