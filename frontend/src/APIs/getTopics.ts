@@ -1,6 +1,7 @@
-import { HTTP_CODES, TOPICS_REQUEST, type TopicsInfo } from "./const";
+import { HTTP_CODES, TOPICS_REQUEST } from "./const";
+import { type GetTopicsDTO } from "../Utils/ResponseDTOs";
 
-async function getTopics(): Promise<TopicsInfo[]>{
+async function getTopics(): Promise<GetTopicsDTO[]>{
     try{
         const response = await fetch(TOPICS_REQUEST, {
             method: 'GET',
@@ -12,8 +13,7 @@ async function getTopics(): Promise<TopicsInfo[]>{
 
 
         if(response.status === HTTP_CODES.OK){
-            const data: TopicsInfo[] = await response.json();
-            return data;
+            return await response.json();
         }
 
     } catch(e){

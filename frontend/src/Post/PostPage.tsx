@@ -4,7 +4,7 @@ import { useRef } from 'react';
 
 import { useWebSocketComment } from "../Hooks/useWebSocketComment";
 import getPosts from "../APIs/getPosts";
-import { type AddCommentDTO } from "../Types/RequestDTOs";
+import { type AddCommentDTO } from "../Utils/RequestDTOs";
 
 function PostPage(){
     const { threadsName } = useParams();

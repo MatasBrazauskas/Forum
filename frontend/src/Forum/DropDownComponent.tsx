@@ -1,16 +1,15 @@
 import { useReducer } from 'react';
-
-import './DropDownStyle.css';
-import type { TopicsInfo } from '../APIs/const';
-
-import '../tailwind.css';
 import { useNavigate } from 'react-router-dom';
 
-function DropDownComponent({ title, topicsArray } : { title: string, topicsArray: TopicsInfo[]} ) {
+import { type GetTopicsDTO } from '../Utils/ResponseDTOs';
 
-    const [showThreads, setShowThreads] = useReducer((state: boolean) => {
-        return !state;
-    }, true);
+import './DropDownStyle.css';
+import '../tailwind.css';
+
+function DropDownComponent({ title, topicsArray } : { title: string, topicsArray:GetTopicsDTO[]} ) {
+
+    const [showThreads, setShowThreads] = useReducer((state: boolean) => {return !state;}, true);
+    const filteredThreadsArray = topicsArray.filter(i => i.topicsName.toLowerCase() === title.toLowerCase());
 
     return (
         <div>
@@ -18,18 +17,17 @@ function DropDownComponent({ title, topicsArray } : { title: string, topicsArray
 
             {showThreads && 
             <div>
-                {topicsArray?.map((topics, i) => {
+                {filteredThreadsArray.map((topics, i) => {
                     return (
-                        <DropDownItem topics={topics} i={i}/>
-                    );
+                        <DropDownItem topics={topics} i={i} />
+                    )
                 })}
-            </div>
-            }
+            </div>}
         </div>
     )
 }
 
-function DropDownItem({topics, i}: {topics: TopicsInfo, i: number}){
+function DropDownItem({topics, i}: {topics: GetTopicsDTO, i: number}){
 
     const navigation = useNavigate();
 

@@ -1,5 +1,5 @@
 import { HTTP_CODES, POST_REQUEST } from "./const";
-import { type GetPostDTO} from "../Types/ResponseDTOs";
+import { type GetPostDTO} from "../Utils/ResponseDTOs";
 
 async function getPosts(threadsName: string): Promise<GetPostDTO>{
     try{

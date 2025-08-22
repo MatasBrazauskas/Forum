@@ -1,5 +1,5 @@
 import { HTTP_CODES, THREADS_REQUEST } from "./const";
-import { type AddThreadDTO } from "../Types/RequestDTOs";
+import { type AddThreadDTO } from "../Utils/RequestDTOs";
 
 async function addNewThread(addThreadDTO: AddThreadDTO ): Promise<null | undefined>{
     try{

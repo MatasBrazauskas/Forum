@@ -1,5 +1,5 @@
 import { HTTP_CODES, THREADS_REQUEST } from "./const";
-import { type GetThreadsDTO } from "../Types/ResponseDTOs";
+import { type GetThreadsDTO } from "../Utils/ResponseDTOs";
 
 
 async function getThreads(topicsName: string): Promise<GetThreadsDTO> {

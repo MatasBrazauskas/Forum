@@ -1,6 +1,6 @@
 import { REGISTER_REQUEST, HTTP_CODES } from "./const";
 import { UnauthorizedError } from "../Errors/CustomError";
-import { type CreateUserCookiesDTO } from "../Types/RequestDTOs";
+import { type CreateUserCookiesDTO } from "../Utils/RequestDTOs";
 
 async function logInOrRegister(credentials: CreateUserCookiesDTO){
     try{

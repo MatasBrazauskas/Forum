@@ -1,3 +1,4 @@
+/////////////////////////////////////
 export type GetTopicsDTO = {
     topicsName: string,
     username: string
@@ -5,8 +6,12 @@ export type GetTopicsDTO = {
     description: string
     threadCount: number
     postCount: number
-    topicType: "INFORMATION" | "GENERAL"
+    topicType: topics,
 }
+///////////////////////////
+export type topics = 
+    | 'INFORMATION' 
+    | 'GENERAL';
 
 export type ThreadsInfo = {
     username: string;
