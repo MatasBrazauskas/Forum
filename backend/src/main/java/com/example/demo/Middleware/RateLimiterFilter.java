@@ -36,7 +36,7 @@ public class RateLimiterFilter extends OncePerRequestFilter {
 
         if (!counter.isAllowed(uuid, role)) {
             log.warn("Illegal Rate limiter - role: {}, uuid: {}", role, uuid);
-            throw new CustomExceptions.RateLimitException("Illegal Rate limiter - role: " + role);
+            throw new CustomExceptions.RateLimitException(role);
         }
 
         filterChain.doFilter(request, response);

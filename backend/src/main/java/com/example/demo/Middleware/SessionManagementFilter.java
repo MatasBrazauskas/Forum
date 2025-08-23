@@ -39,19 +39,19 @@ public class SessionManagementFilter extends OncePerRequestFilter
         request.setAttribute(MiddlewareUtils.persistentCookieName, persistentJWT);
 
         if(sessionJWT == null || !jwtUtils.validateToken(sessionJWT)){
-            String role = "GUEST";
+            var role = UserProfile.Role.GUEST;
 
             if(persistentJWT != null){
                 final String email = jwtUtils.extractEmail(persistentJWT);
 
-                var user = userProfileRepo.findByEmail(email).orElseThrow(( ) -> new CustomExceptions.UserProfileNotFound("Email not found"));
+                var user = userProfileRepo.findByEmail(email).orElseThrow(( ) -> new CustomExceptions.UserProfileNotFound(email));
                 user.setLastOnline(LocalDate.now());
                 userProfileRepo.save(user);
 
-                role = user.getRole().toString();
+                role = user.getRole();
             }
 
-            final String newSessionJWT = cookieFactory.addSessionCookie(response, role);
+            final String newSessionJWT = cookieFactory.addSessionCookie(response, role.toString());
             request.setAttribute(MiddlewareUtils.sessionCookieName, newSessionJWT);
         }
 

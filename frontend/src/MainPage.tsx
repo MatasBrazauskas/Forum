@@ -7,6 +7,7 @@ import TopBar from "./TopBar/TopBar";
 import getUsersProfile from "./APIs/getUsersProfile";
 import { adduserInfo } from "./Store/userState";
 import { USER_INFO_STALE_TIME, USER_INFO_QUERY_KEY } from "./Utils/queryConsts";
+import ErrorsComponent from "./Errors/ErrorsComponent";
 
 function MainPage(){
 
@@ -27,6 +28,7 @@ function MainPage(){
     return (
         <div>
             <TopBar />
+            <ErrorsComponent />
             <Outlet />
         </div>
     )

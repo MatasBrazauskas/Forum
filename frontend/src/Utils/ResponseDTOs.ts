@@ -49,3 +49,7 @@ export type GetPostDTO = {
     dateOfCreation: string,
     comments: GetCommentsDTO[],
 }
+
+export type ErrorInformationDTO = {
+    
+}

@@ -34,7 +34,8 @@ public class UserProfile {
 
     public enum Role {
         ADMIN,
-        USER
+        USER,
+        GUEST,
     }
 
     @Id

@@ -1,8 +1,9 @@
 import { useRef, useReducer } from "react";
 
-import { type AddTopicsDTO } from "../APIs/const";
 import addNewTopic from "../APIs/addNewTopic";
 import { queryClient } from "../main";
+import { type AddTopicsDTO } from "../Utils/RequestDTOs";
+import { TOPICS_ARRAY_QUERY_KEY } from "../Utils/queryConsts";
 
 import './DropDownStyle.css';
 
@@ -25,9 +26,8 @@ function AddTopicComponent(){
             topicType: topicsType?.current?.value!,
         }
 
-        const response = await addNewTopic(data);
-        queryClient.invalidateQueries({ queryKey: ['topics']});
-        console.log(response);
+        await addNewTopic(data);
+        queryClient.invalidateQueries({ queryKey: [TOPICS_ARRAY_QUERY_KEY]});
     }
 
     return (

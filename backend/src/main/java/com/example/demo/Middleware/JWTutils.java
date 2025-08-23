@@ -21,15 +21,15 @@ public class JWTutils {
     private String SECRET_KEY;
 
     public String extractRole(String token) {
-        return extractClaim(token, claims -> claims.get("role").toString());
+        return extractClaim(token.substring(7), claims -> claims.get("role").toString());
     }
 
     public String extractUUID(String token) {
-        return extractClaim(token, claims -> claims.get("uuid").toString());
+        return extractClaim(token.substring(7), claims -> claims.get("uuid").toString());
     }
 
     public String extractEmail(String token) {
-        return extractClaim(token, claims -> claims.get("email").toString());
+        return extractClaim(token.substring(7), claims -> claims.get("email").toString());
     }
 
     public Boolean validateToken(String token) {
@@ -65,7 +65,7 @@ public class JWTutils {
     }
 
     private String createToken(Map<String, String> claims, long expiration) {
-        return Jwts.builder()
+        return "Bearer " + Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))

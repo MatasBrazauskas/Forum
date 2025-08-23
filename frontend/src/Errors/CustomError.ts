@@ -10,14 +10,14 @@ abstract class CustomError extends Error{
 }
 
 class UnauthorizedError extends CustomError {
-    constructor(path: string, apiCall:string, additionalInfo: string){
-        super(`User is not authrorized for this enpoint: ${path}, call ${apiCall}`, additionalInfo);
+    constructor(path: string, method:string, additionalInfo: string){
+        super(`User is not authrorized for this enpoint: ${path}, method ${method}`, additionalInfo);
     }
 }
 
 class NotFoundError extends CustomError{
-    constructor(path: string, apiCall: string, additionalInfo: string){
-        super(`Not Found error from this endpoint: ${path}, call ${apiCall}`, additionalInfo);
+    constructor(path: string, method: string, additionalInfo: string){
+        super(`Not Found error from this endpoint: ${path}, method ${method}`, additionalInfo);
     }
 }
 

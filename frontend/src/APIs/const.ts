@@ -19,3 +19,12 @@ export enum HTTP_CODES {
     UNAUTHORIZED = 401,
     NOT_FOUND = 404,
 }
+
+export const percentEncoding = (url: string, ...queries: string[]) => {
+    let addedUrl = url;
+
+    for(let i = 0; i < queries.length; i++){
+        addedUrl += queries[i];
+    }
+    return addedUrl;
+}
