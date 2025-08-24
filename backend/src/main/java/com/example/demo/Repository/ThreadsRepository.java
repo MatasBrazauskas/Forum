@@ -10,9 +10,5 @@ import java.util.Optional;
 @Repository
 public interface ThreadsRepository extends JpaRepository<Thread, Long>
 {
-    @Transactional
-    public Optional<Thread> findThreadByTitle(String title);
-
-    @Transactional
-    public Optional<Thread> findThreadById(Long id);
+    Optional<Thread> findThreadByTitle(String title);
 }

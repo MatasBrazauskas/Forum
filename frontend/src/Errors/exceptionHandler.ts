@@ -4,7 +4,10 @@ import { UnauthorizedError, NotFoundError } from "./CustomError";
 async function exceptionHandler(response: Response, path: string, method: string) {
     switch(response.status){
         case HTTP_CODES.OK:
-            return await response.json();
+            const contentType = response.headers.get('Content-Type');
+            if(contentType && contentType.includes('application/json'))
+                return await response.json();
+            return null;
         case HTTP_CODES.UNAUTHORIZED:
             throw new UnauthorizedError(path, method, await response.text());
         case HTTP_CODES.NOT_FOUND:

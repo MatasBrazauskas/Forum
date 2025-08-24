@@ -5,15 +5,18 @@ import getThreads from "../APIs/getThreads";
 import AddNewTheadComponent from "./AddNewThreadComponent";
 import { percentEncoding } from "../APIs/const";
 import { THREADS_STALE_TIME, THREADS_QUERY_KEY } from "../Utils/queryConsts";
+import { type RootState } from "../Store/store";
+import { useSelector } from "react-redux";
 
 import './threadStyle.css';
 
 function ThreadPage(){
     const { topicsName } = useParams();
+    const usersInfo = useSelector((state: RootState) => state.USER_INFO);
     const navigation = useNavigate();
 
     const threadsRequest = useQuery({
-        queryKey: [THREADS_QUERY_KEY],
+        queryKey: [THREADS_QUERY_KEY, topicsName],
         queryFn: () => getThreads(topicsName!),
         staleTime: THREADS_STALE_TIME,
     })
@@ -24,7 +27,7 @@ function ThreadPage(){
                 <div className='font-black'>{threadsRequest?.data?.topicsName}</div>
                 <div>{threadsRequest?.data?.description}</div>
             </div>
-            <AddNewTheadComponent topicsName={topicsName!}/>
+            {usersInfo?.role !== 'GUEST' && <AddNewTheadComponent topicsName={topicsName!}/>}
             <div className='bg-zinc-800 p-3 font-black'>Threads</div>
 
             {threadsRequest?.data?.threads.map((thread, i) => {

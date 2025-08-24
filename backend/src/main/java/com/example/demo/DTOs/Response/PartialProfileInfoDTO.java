@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PartialProfileInfoDTO
+public final class PartialProfileInfoDTO
 {
-    private String username;
-    private String role;
+    private final String username = "GUEST";
+    private String role = "GUEST";
 }

@@ -1,14 +1,18 @@
-import { HTTP_CODES, POST_REQUEST } from "./const";
+import { POSTS_CONTROLLER_URL} from "./const";
 import { type GetPostDTO} from "../Utils/ResponseDTOs";
+import exceptionHandler from "../Errors/exceptionHandler";
+import { percentEncoding } from "./const";
 
 async function getPosts(threadsName: string): Promise<GetPostDTO>{
-    try{
-        const response = await fetch(POST_REQUEST + `/${threadsName}`, {
+    //try{
+        const response = await fetch(percentEncoding(POSTS_CONTROLLER_URL, threadsName), {
             method: 'GET',
             credentials: 'include'
         });
 
-        console.log(response);
+        return exceptionHandler(response, percentEncoding(POSTS_CONTROLLER_URL, threadsName), 'GET');
+
+        /*console.log(response);
 
         if(response.status === HTTP_CODES.OK){
             return await response.json();
@@ -17,7 +21,7 @@ async function getPosts(threadsName: string): Promise<GetPostDTO>{
     } catch(e){
         console.error(e);
     }
-    throw new Error('Blet getting the threads info with comments');
+    throw new Error('Blet getting the threads info with comments');*/
 }
 
 export default getPosts;

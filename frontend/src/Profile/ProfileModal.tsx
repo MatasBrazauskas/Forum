@@ -1,10 +1,20 @@
 import { Modal } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 import type { RootState } from "../Store/store";
+import logOut from "../APIs/logOut";
+import { addUserInfo} from "../Store/userState";
+import { type UserInformation } from "../Store/utils";
 
 function ProfileModal(props: any) {
 
     const usersInfo = useSelector((state: RootState) => state.USER_INFO);
+    const dispatch = useDispatch();
+
+    const handleLogOut = async () => {
+        const data: UserInformation = await logOut();
+        dispatch(addUserInfo(data!));
+    }
 
     return (
         <Modal
@@ -25,6 +35,7 @@ function ProfileModal(props: any) {
             <div>{usersInfo?.lastOnline}</div>
             <div>{usersInfo?.postCount}</div>
             <div>{usersInfo?.reputation}</div>
+            <button type='button' onClick={() => handleLogOut()}>Log Out</button>
         </Modal.Body>
         </Modal>
     );

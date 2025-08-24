@@ -3,8 +3,8 @@ export type UserInformation = {
     role: ROLES,
     dateOfCreation?: string,
     lastOnline?: string,
-    postCount?: string,
-    reputation?: string,
+    postCount?: number,
+    reputation?: number,
 }
 
 export type ROLES = "ADMIN" | "USER" | "GUEST"

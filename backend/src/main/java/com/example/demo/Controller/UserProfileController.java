@@ -1,12 +1,17 @@
 package com.example.demo.Controller;
 
 import com.example.demo.DTOs.ProfileInfoDTO;
+import com.example.demo.DTOs.Response.PartialProfileInfoDTO;
+import com.example.demo.Exceptions.CustomExceptions;
 import com.example.demo.Repository.UserProfileRepository;
+import com.example.demo.Service.UserProfileService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,27 +21,28 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class UserProfileController
 {
-    private final UserProfileRepository userProfileRepo;
+    private final UserProfileService userProfileService;
     private final ModelMapper mapper;
 
-    public UserProfileController(UserProfileRepository userProfileRepo, ModelMapper mapper) {
-        this.userProfileRepo = userProfileRepo;
+    public UserProfileController(UserProfileService userProfileService, ModelMapper mapper) {
+        this.userProfileService = userProfileService;
         this.mapper = mapper;
     }
 
     @GetMapping
-    public ResponseEntity<ProfileInfoDTO> getUserData()
+    public ResponseEntity<?> getUserData()
     {
         log.info("Getting users data");
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        final var principal = authentication.getPrincipal();
+        final var authentication = SecurityContextHolder.getContext().getAuthentication();
+        final var email = authentication.getPrincipal();
 
-        if(principal == null){
+        if(email == null){
             log.error("Principal is null, there is no email");
-            return  ResponseEntity.noContent().build();
+            final var defaultUserInfo = new PartialProfileInfoDTO();
+            return ResponseEntity.ok(defaultUserInfo);
         }
 
-        var profile = userProfileRepo.findByEmail(principal.toString());
+        final var profile = userProfileService.getUser(email.toString());
         return ResponseEntity.ok().body(mapper.map(profile,  ProfileInfoDTO.class));
     }
 }

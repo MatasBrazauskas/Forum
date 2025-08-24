@@ -4,6 +4,9 @@ import { type CredentialResponse } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 
 import logInOrRegister from '../../APIs/logInOrRegister';
+import type { UserInformation } from "../../Store/utils";
+import { useDispatch } from "react-redux";
+import { addUserInfo } from "../../Store/userState";
 
 export type Register = {
     name: string,
@@ -12,10 +15,13 @@ export type Register = {
 
 function GoogleOAuth(){
 
+    const dispatch = useDispatch();
+
     const { isError, error, mutate } = useMutation({
         mutationFn: async (e: CredentialResponse) => {
-            const data:Register = jwtDecode(e.credential!);
-            await logInOrRegister({ username: data?.name!, email: data?.email!})
+            const data: Register = jwtDecode(e.credential!)
+            const usersInfo: UserInformation = await logInOrRegister({ username: data?.name!, email: data?.email!})
+            dispatch(addUserInfo(usersInfo));
     }});
 
     return (

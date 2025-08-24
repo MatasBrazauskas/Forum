@@ -1,9 +1,10 @@
-import { HTTP_CODES, THREADS_REQUEST } from "./const";
+import { THREADS_CONTROLLER_URL} from "./const";
 import { type AddThreadDTO } from "../Utils/RequestDTOs";
+import exceptionHandler from "../Errors/exceptionHandler";
 
 async function addNewThread(addThreadDTO: AddThreadDTO ): Promise<null | undefined>{
-    try{
-        const response = await fetch(THREADS_REQUEST, {
+    //try{
+        const response = await fetch(THREADS_CONTROLLER_URL, {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -12,7 +13,9 @@ async function addNewThread(addThreadDTO: AddThreadDTO ): Promise<null | undefin
             body: JSON.stringify(addThreadDTO), 
         });
 
-        console.warn(response);
+        return exceptionHandler(response, THREADS_CONTROLLER_URL, 'POST');
+
+        /*console.warn(response);
 
         if(response.status === HTTP_CODES.OK){
             return null;
@@ -21,7 +24,7 @@ async function addNewThread(addThreadDTO: AddThreadDTO ): Promise<null | undefin
     } catch(e){
         console.error(e);
     }
-    return undefined;
+    return undefined;*/
 }
 
 export default addNewThread;

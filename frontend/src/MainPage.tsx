@@ -1,29 +1,27 @@
 import { Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
 
 import TopBar from "./TopBar/TopBar";
 import getUsersProfile from "./APIs/getUsersProfile";
-import { adduserInfo } from "./Store/userState";
-import { USER_INFO_STALE_TIME, USER_INFO_QUERY_KEY } from "./Utils/queryConsts";
+import { addUserInfo } from "./Store/userState";
 import ErrorsComponent from "./Errors/ErrorsComponent";
+import { USER_INFO_QUERY_KEY, USER_INFO_STALE_TIME } from "./Utils/queryConsts";
+import type { UserInformation } from "./Store/utils";
 
 function MainPage(){
 
     const dispatch = useDispatch();
 
-    const usersInfo = useQuery({
+    useQuery({
         queryKey: [USER_INFO_QUERY_KEY],
-        queryFn: () => getUsersProfile(),
+        queryFn: async () => {
+            const data: UserInformation = await getUsersProfile()
+            dispatch(addUserInfo(data));
+            return data;
+        },
         staleTime: USER_INFO_STALE_TIME,
     });
-
-    useEffect(() => {
-        if(usersInfo.isSuccess && !!usersInfo){
-            dispatch(adduserInfo(usersInfo.data!));
-        }
-    }, [usersInfo.data]);
 
     return (
         <div>

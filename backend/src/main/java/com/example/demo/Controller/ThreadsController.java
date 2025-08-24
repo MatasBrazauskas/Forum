@@ -26,15 +26,13 @@ public class ThreadsController
     }
 
     @GetMapping("/{topicsName}")
-    @Cacheable(value = "threadsCache", key = "#topicsName")
     public ResponseEntity<GetThreadsDTO> getTopicsThreads(@PathVariable("topicsName") @NotEmpty String topicsName)
     {
         log.info("Getting threads for topic %s", topicsName);
         return threadsService.getThreadsInfo(topicsName);
     }
 
-    @PostMapping("/{topicsName}")
-    @CacheEvict(value = "threadsCache", key = "#addThreadDTO.title")
+    @PostMapping
     public ResponseEntity<Void> addNewThread(@RequestBody @Valid AddThreadDTO addThreadDTO)
     {
         log.info("Adding threads for topic %s", addThreadDTO.getTopicsName());

@@ -1,10 +1,10 @@
-import { USERS_PROFILE_REQUEST } from "./const";
+import { USERS_CONTROLLER_URL} from "./const";
 import { type UserInformation } from "../Store/utils";
 import exceptionHandler from "../Errors/exceptionHandler";
 
 async function getUsersProfile(): Promise<UserInformation>{
     //try{
-        const response = await fetch(USERS_PROFILE_REQUEST, {
+        const response = await fetch(USERS_CONTROLLER_URL, {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -12,7 +12,7 @@ async function getUsersProfile(): Promise<UserInformation>{
             }
         })
 
-        return exceptionHandler(response, USERS_PROFILE_REQUEST, 'GET');
+        return exceptionHandler(response, USERS_CONTROLLER_URL, 'GET');
 
     /*}catch(e){
         console.error(e);

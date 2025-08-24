@@ -2,11 +2,13 @@ package com.example.demo.Service;
 
 import com.example.demo.DTOs.ProfileInfoDTO;
 import com.example.demo.DTOs.Request.CreateUserCookiesDTO;
+import com.example.demo.DTOs.Response.PartialProfileInfoDTO;
 import com.example.demo.Entities.UserProfile;
 import com.example.demo.Exceptions.CustomExceptions;
 import com.example.demo.Middleware.CookieFactory;
 import com.example.demo.Middleware.JWTutils;
 import com.example.demo.Repository.UserProfileRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -41,8 +43,14 @@ public class CookieService
         }
 
         cookieFactory.addPersistentCookie(response, user.getEmail());
-        cookieFactory.addSessionCookie(response, user.getRole().toString());
+        cookieFactory.addSessionCookie(response, user.getRole());
 
         return ResponseEntity.ok(mapper.map(user, ProfileInfoDTO.class));
+    }
+
+    public ResponseEntity<PartialProfileInfoDTO> deleteCookie(HttpServletResponse response){
+        cookieFactory.deletePersistentCookie(response);
+        final var defaultUserInfo = new PartialProfileInfoDTO();
+        return ResponseEntity.ok(defaultUserInfo);
     }
 }

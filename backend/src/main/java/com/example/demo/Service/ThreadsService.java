@@ -5,6 +5,7 @@ import com.example.demo.DTOs.Response.GetThreadDTO;
 import com.example.demo.DTOs.Response.GetThreadsDTO;
 import com.example.demo.Entities.Thread;
 import com.example.demo.Repository.ThreadsRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -71,8 +72,11 @@ public class ThreadsService
         threadsRepo.save(thread);
         topicsService.incrementThreads(addThreadDTO.getTopicsName());
 
-
         return ResponseEntity.ok().build();
+    }
+
+    public Thread findById(final Long id){
+        return threadsRepo.findById(id).orElseThrow(()->new EntityNotFoundException(id.toString()));
     }
 
     public void saveThread(final Thread thread){

@@ -1,10 +1,10 @@
-import { TOPICS_REQUEST } from "./const";
+import { TOPICS_CONTROLLER_URL} from "./const";
 import { type GetTopicsDTO } from "../Utils/ResponseDTOs";
 import exceptionHandler from "../Errors/exceptionHandler";
 
 async function getTopics(): Promise<GetTopicsDTO[]>{
     /*try{*/
-        const response = await fetch(TOPICS_REQUEST, {
+        const response = await fetch(TOPICS_CONTROLLER_URL, {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -12,7 +12,7 @@ async function getTopics(): Promise<GetTopicsDTO[]>{
             }
         }); 
 
-        return exceptionHandler(response, TOPICS_REQUEST, 'GET');
+        return exceptionHandler(response, TOPICS_CONTROLLER_URL, 'GET');
     /*} catch(e){
         console.error(e);
         console.warn('Error is on getting topics');

@@ -54,7 +54,7 @@ public class SessionManagementFilter extends OncePerRequestFilter
                 role = user.getRole();
             }
 
-            final String newSessionJWT = cookieFactory.addSessionCookie(response, role.toString());
+            final String newSessionJWT = cookieFactory.addSessionCookie(response, role);
             request.setAttribute(MiddlewareUtils.sessionCookieName, newSessionJWT);
         }
 
