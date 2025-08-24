@@ -3,6 +3,7 @@ package com.example.demo.Middleware;
 import com.example.demo.Entities.UserProfile;
 import com.example.demo.Exceptions.CustomExceptions;
 import com.example.demo.Repository.UserProfileRepository;
+import com.example.demo.Service.UserProfileService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,13 +22,13 @@ import java.time.LocalDate;
 public class SessionManagementFilter extends OncePerRequestFilter
 {
     private final JWTutils jwtUtils;
-    private final UserProfileRepository userProfileRepo;
+    private final UserProfileService userProfileService;
     private final CookieFactory cookieFactory;
 
-    public SessionManagementFilter(JWTutils jwtUtils, UserProfileRepository userProfileRepo, CookieFactory cookieFactory){
+    public SessionManagementFilter(JWTutils jwtUtils,UserProfileService userProfileService, CookieFactory cookieFactory){
         this.jwtUtils = jwtUtils;
-        this.userProfileRepo = userProfileRepo;
         this.cookieFactory = cookieFactory;
+        this.userProfileService = userProfileService;
     }
 
     @Override
@@ -47,9 +48,9 @@ public class SessionManagementFilter extends OncePerRequestFilter
             if(persistentJWT != null){
                 final String email = jwtUtils.extractEmail(persistentJWT);
 
-                var user = userProfileRepo.findByEmail(email).orElseThrow(( ) -> new CustomExceptions.UserProfileNotFound(email));
+                var user = userProfileService.getUser(email);
                 user.setLastOnline(LocalDate.now());
-                userProfileRepo.save(user);
+                userProfileService.saveUser(user);
 
                 role = user.getRole();
             }

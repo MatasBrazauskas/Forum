@@ -79,6 +79,10 @@ public class ThreadsService
         return threadsRepo.findById(id).orElseThrow(()->new EntityNotFoundException(id.toString()));
     }
 
+    public Thread findByTitle(final String title){
+        return threadsRepo.findThreadByTitle(title).orElseThrow(()->new EntityNotFoundException(title));
+    }
+
     public void saveThread(final Thread thread){
         threadsRepo.save(thread);
     }

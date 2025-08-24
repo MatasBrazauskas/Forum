@@ -1,9 +1,9 @@
 import { POSTS_CONTROLLER_URL} from "./const";
-import { type GetPostDTO} from "../Utils/ResponseDTOs";
+import { type GetCommentsDTO} from "../Utils/ResponseDTOs";
 import exceptionHandler from "../Errors/exceptionHandler";
 import { percentEncoding } from "./const";
 
-async function getPosts(threadsName: string): Promise<GetPostDTO>{
+async function getPosts(threadsName: string): Promise<GetCommentsDTO>{
     //try{
         const response = await fetch(percentEncoding(POSTS_CONTROLLER_URL, threadsName), {
             method: 'GET',

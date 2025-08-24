@@ -6,6 +6,7 @@ import com.example.demo.Exceptions.CustomExceptions;
 import com.example.demo.Repository.CommentRepository;
 import com.example.demo.Repository.ThreadsRepository;
 import com.example.demo.Repository.UserProfileRepository;
+import com.example.demo.Service.CommentService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -19,14 +20,12 @@ import java.time.LocalDate;
 @Slf4j
 public class WebSocketController
 {
-    private final UserProfileRepository userProfileRepo;
-    private final ThreadsRepository threadsRepo;
-    private final CommentRepository commentRepo;
 
-    public WebSocketController(UserProfileRepository userProfileRepo, ThreadsRepository threadsRepo, CommentRepository commentRepo) {
-        this.userProfileRepo = userProfileRepo;
-        this.threadsRepo = threadsRepo;
-        this.commentRepo = commentRepo;
+    private final CommentService  commentService;
+
+    public WebSocketController(CommentService commentService)
+    {
+        this.commentService = commentService;
     }
 
     @Transactional
@@ -34,24 +33,7 @@ public class WebSocketController
     @SendTo("/topic/comments")
     public Comment comment(AddCommentDTO addCommentDTO, Principal principal){
         log.info("Adding a comment with WebSockets");
-        final var email =  principal.getName();
-
-        log.warn("This is users email: {}", email);
-
-
-        final var threads = threadsRepo.findThreadByTitle(addCommentDTO.getThreadName()).orElse(null);
-        final var user = userProfileRepo.findByEmail(email).orElseThrow(() -> new CustomExceptions.UserProfileNotFound("User not found"));
-        final var reply = commentRepo.findById(addCommentDTO.getReplyId()).orElse(null);
-
-        var com = new Comment();
-
-        com.setCommentatorProfile(user);
-        com.setThread(threads);
-        com.setReply(reply);
-        com.setComment(addCommentDTO.getComment());
-        com.setDateOfComment(LocalDate.now());
-
-        return commentRepo.save(com);
+        return commentService.addComment(addCommentDTO, principal);
     }
 
     @MessageMapping("/typing")

@@ -32,9 +32,9 @@ function ThreadPage(){
 
             {threadsRequest?.data?.threads.map((thread, i) => {
                 return (
-                    <div className="container temp" key={i}>
+                    <div className="container addStyleContainer" key={i}>
                         <div className='w-160'>
-                            <div onClick={() => navigation(percentEncoding('posts', thread.title))}>{thread.title}</div>
+                            <div onClick={() => navigation(percentEncoding('/posts', thread.title))}>{thread.title}</div>
                             <div>{thread.dateOfCreation}</div>
                         </div>
 

@@ -1,17 +1,12 @@
 package com.example.demo.Controller;
 
 import com.example.demo.DTOs.ProfileInfoDTO;
-import com.example.demo.DTOs.Response.PartialProfileInfoDTO;
-import com.example.demo.Exceptions.CustomExceptions;
-import com.example.demo.Repository.UserProfileRepository;
+import com.example.demo.DTOs.Response.DefaultProfileInfoDTO;
 import com.example.demo.Service.UserProfileService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +33,7 @@ public class UserProfileController
 
         if(email == null){
             log.error("Principal is null, there is no email");
-            final var defaultUserInfo = new PartialProfileInfoDTO();
+            final var defaultUserInfo = new DefaultProfileInfoDTO();
             return ResponseEntity.ok(defaultUserInfo);
         }
 

@@ -1,23 +1,24 @@
 package com.example.demo.DTOs.Response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 //?????????????????????????????????
 @Data
 @NoArgsConstructor
 public class GetCommentsDTO
 {
-    private String username;
-    private LocalDate joined;
-    private int postCount;
-    private int reputation;
+    private PartialProfileInfoDTO partialProfile;
 
-    private LocalDate dateOfCreation;
-    private String comment;
+    private String title;
+    private String content;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate contentDateOfCreation;
 
-    private String reply;
-    private Long replyId;
+    private List<GetCommentDTO> comments;
 }

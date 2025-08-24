@@ -2,9 +2,8 @@ package com.example.demo.Controller;
 
 import com.example.demo.DTOs.ProfileInfoDTO;
 import com.example.demo.DTOs.Request.CreateUserCookiesDTO;
-import com.example.demo.DTOs.Response.PartialProfileInfoDTO;
+import com.example.demo.DTOs.Response.DefaultProfileInfoDTO;
 import com.example.demo.Service.CookieService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +30,7 @@ public class CookieController
     }
 
     @DeleteMapping
-    public ResponseEntity<PartialProfileInfoDTO> deleteCookies(HttpServletResponse response){
+    public ResponseEntity<DefaultProfileInfoDTO> deleteCookies(HttpServletResponse response){
         log.info("Deleting persistent cookie");
         return cookieService.deleteCookie(response);
     }

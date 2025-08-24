@@ -35,7 +35,7 @@ function App(){
             <Route path="/" element={<MainPage />}>
               <Route path='' element={<ForumPage />}/>
               <Route path='threads/rules' element={<ThreadPage />}/>
-              <Route path='threads/:topicsName' element={<ThreadPage />} />
+              <Route path='threads/:topicsName' element={<ThreadPage />}/>
               <Route path='posts/:threadsName' element={<PostPage />} />
               <Route path='profile' element={<ProfilePage />}/>
               <Route path='inbox' element={<InboxPage />}/>

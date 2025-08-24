@@ -1,9 +1,10 @@
 package com.example.demo.Config;
 
 import com.example.demo.DTOs.*;
-import com.example.demo.DTOs.Response.GetCommentsDTO;
+import com.example.demo.DTOs.Response.GetCommentDTO;
 import com.example.demo.DTOs.Response.GetThreadDTO;
 import com.example.demo.DTOs.Response.GetTopicsDTO;
+import com.example.demo.DTOs.Response.PartialProfileInfoDTO;
 import com.example.demo.Entities.Comment;
 import com.example.demo.Entities.Thread;
 import com.example.demo.Entities.Topics;
@@ -47,14 +48,21 @@ public class ModelMapperConfig
                 .addMapping(th -> th.getCommentCount(), GetThreadDTO::setCommentCount)
                 .addMapping(th -> th.getUpvoteCount(), GetThreadDTO::setUpvoteCount);
 
-        modelMapper.createTypeMap(Comment.class, GetCommentsDTO.class)
-                .addMapping(t -> t.getCommentatorProfile().getUsername(), GetCommentsDTO::setUsername)
-                .addMapping(t -> t.getDateOfComment(), GetCommentsDTO::setDateOfCreation)
-                .addMapping(t -> t.getReply(), GetCommentsDTO::setReply)
-                .addMapping(t -> t.getThread().getUserProfile().getPostCount(), GetCommentsDTO::setPostCount)
-                .addMapping(t -> t.getThread().getUserProfile().getReputation(), GetCommentsDTO::setReputation)
-                .addMapping(t -> t.getComment(), GetCommentsDTO::setComment)
-                .addMapping(t -> t.getId(), GetCommentsDTO::setReplyId);
+        modelMapper.createTypeMap(UserProfile.class, PartialProfileInfoDTO.class)
+                .addMapping(user -> user.getUsername(), PartialProfileInfoDTO::setUsername)
+                .addMapping(user -> user.getDateOfCreation(), PartialProfileInfoDTO::setJoined)
+                .addMapping(user -> user.getPostCount(), PartialProfileInfoDTO::setPostCount)
+                .addMapping(user -> user.getReputation(), PartialProfileInfoDTO::setReputation);
+
+
+        /*modelMapper.createTypeMap(Comment.class, GetCommentDTO.class)
+                .addMapping(t -> t.getCommentatorProfile().getUsername(), GetCommentDTO::setUsername)
+                .addMapping(t -> t.getDateOfComment(), GetCommentDTO::setDateOfCreation)
+                .addMapping(t -> t.getReply(), GetCommentDTO::setReply)
+                .addMapping(t -> t.getThread().getUserProfile().getPostCount(), GetCommentDTO::setPostCount)
+                .addMapping(t -> t.getThread().getUserProfile().getReputation(), GetCommentDTO::setReputation)
+                .addMapping(t -> t.getComment(), GetCommentDTO::setComment)
+                .addMapping(t -> t.getId(), GetCommentDTO::setReplyId);*/
 
 
 

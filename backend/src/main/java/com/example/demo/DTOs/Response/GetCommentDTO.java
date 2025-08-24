@@ -4,16 +4,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 //?????????????????????????????????
 @Data
 @NoArgsConstructor
-public class GetPostDTO
+public class GetCommentDTO
 {
-    private String username;
-    private String title;
-    private LocalDate dateOfCreation;
+    private PartialProfileInfoDTO partialProfile;
 
-    private List<GetCommentsDTO> comments;
+    private LocalDate dateOfCreation;
+    private String comment;
+
+    private String reply;
+    private Long replyId;
 }

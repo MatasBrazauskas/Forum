@@ -30,12 +30,16 @@ export type GetThreadsDTO = {
     threads: GetThreadInfo[],
 }
 
+export type PartialProfileInfoDTO = {
+    username: string,
+    joined: string,
+    postCount: number,
+    reputation: number,
+}
+
 //???????????????????????????????????
-export type GetCommentsDTO = {
-    username: string;
-    joined: string;
-    postCount: number;
-    reputation: number;
+export type GetCommentDTO = {
+    partialProfile: PartialProfileInfoDTO,
 
     dateOfCreation: string;
     comment: string;
@@ -45,11 +49,14 @@ export type GetCommentsDTO = {
 }
 
 //???????????????????????????????????/
-export type GetPostDTO = {
+export type GetCommentsDTO = {
+    partialProfile: PartialProfileInfoDTO,
+
     title: string,
-    content: string,
-    dateOfCreation: string,
-    comments: GetCommentsDTO[],
+    content: string;
+    contentDateOfCreation: string;
+
+    comments: GetCommentDTO[];
 }
 
 export type ErrorInformationDTO = {

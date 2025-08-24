@@ -1,14 +1,18 @@
 package com.example.demo.DTOs.Response;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public final class PartialProfileInfoDTO
+public class PartialProfileInfoDTO
 {
-    private final String username = "GUEST";
-    private String role = "GUEST";
+    private String username;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate joined;
+    private int postCount;
+    private int reputation;
 }

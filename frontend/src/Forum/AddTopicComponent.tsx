@@ -29,6 +29,8 @@ function AddTopicComponent(){
 
         await addNewTopic(data);
         queryClient.invalidateQueries({ queryKey: [TOPICS_ARRAY_QUERY_KEY]});
+
+        e.currentTarget.reset();
     }
 
     return (
@@ -36,8 +38,8 @@ function AddTopicComponent(){
             <div onClick={() => switchState()} className='dropDown'>Add New Topic</div>
             {open && 
             <form onSubmit={(e) => handleSubmit(e)} className='addTopic' >
-                <input type='text' maxLength={TOPICS_NAME_LENGTH} ref={topicsName} placeholder="Enter new topics name" className='w-90'/>
-                <input type='text' maxLength={TOPICS_DESCRIPTION_LENGTH} ref={description} placeholder="Enter new topics description" className='w-90'/>
+                <input type='text' maxLength={TOPICS_NAME_LENGTH} ref={topicsName} placeholder="Enter new topics name" className='w-99'/>
+                <input type='text' maxLength={TOPICS_DESCRIPTION_LENGTH} ref={description} placeholder="Enter new topics description" className='w-99'/>
                 <select ref={topicsType}>
                     <option value="INFORMATION">INFORMATION</option>
                     <option value="GENERAL">GENERAL</option>
