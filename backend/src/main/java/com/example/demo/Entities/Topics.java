@@ -4,16 +4,13 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.catalina.User;
 import org.hibernate.annotations.BatchSize;
-import org.springframework.boot.autoconfigure.pulsar.PulsarProperties;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "topics", indexes = {@Index(columnList = "topicsName")})
+@Table(name = "topics", indexes = {@Index(columnList = "topicsName", unique = true)})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,13 +33,13 @@ public class Topics
     @BatchSize(size = 20)
     private List<Thread> threads;
 
-    @Column(nullable = false, columnDefinition = "VARCHAR(256)", name = "topics_name")
+    @Column(unique = true, nullable = false, columnDefinition = "VARCHAR(64)", name = "topics_name")
     private String topicsName;
 
     @Column(nullable = false, columnDefinition = "DATE", name = "created")
-    private LocalDateTime created;
+    private LocalDate created;
 
-    @Column(nullable = false, columnDefinition = "VARCHAR(256)", name = "description")
+    @Column(nullable = false, columnDefinition = "VARCHAR(128)", name = "description")
     private String description;
 
     @Column(nullable = false, columnDefinition = "SMALLINT UNSIGNED", name = "thread_count")

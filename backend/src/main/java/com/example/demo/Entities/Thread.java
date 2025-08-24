@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "threads", indexes = {@Index(columnList = "title")})
+@Table(name = "threads", indexes = {@Index(columnList = "title", unique = true)})
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,10 +34,10 @@ public class Thread
     @BatchSize(size = 20)
     private List<Comment> comments = new ArrayList<>();
 
-    @Column(unique = true, nullable = false, name = "title", columnDefinition = "NVARCHAR(128)")
+    @Column(unique = true, nullable = false, name = "title", columnDefinition = "NVARCHAR(64)")
     private String title;
 
-    @Column(nullable = false, name = "content", columnDefinition = "NVARCHAR(512)")
+    @Column(nullable = false, name = "content", columnDefinition = "NVARCHAR(256)")
     private String content;
 
     @Column(nullable = false, name = "date_of_creation", columnDefinition = "DATE")

@@ -16,20 +16,20 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "users", indexes = {@Index(unique = true, name="index_username", columnList = "username")})
+@Table(name = "users", indexes = {@Index(columnList = "email", unique = true)})
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserProfile {
 
-    public UserProfile(String username, String email, LocalDate date, LocalDate date1, int i, int i1, Role role)
+    public UserProfile(String u, String e, LocalDate d1, LocalDate d2, int i1, int i2, Role r)
     {
-        this.username = username;
-        this.email = email;
-        this.dateOfCreation = LocalDate.now();
-        this.lastOnline = date1;
-        this.postCount = i;
-        this.reputation = i1;
-        this.role = role;
+        this.username = u;
+        this.email = e;
+        this.dateOfCreation = d1;
+        this.lastOnline = d2;
+        this.postCount = i1;
+        this.reputation = i2;
+        this.role = r;
     }
 
     public enum Role {

@@ -1,10 +1,13 @@
-import { HTTP_CODES, THREADS_REQUEST } from "./const";
+import { THREADS_REQUEST } from "./const";
 import { type GetThreadsDTO } from "../Utils/ResponseDTOs";
+import { percentEncoding } from "./const";
+import exceptionHandler from "../Errors/exceptionHandler";
 
 
 async function getThreads(topicsName: string): Promise<GetThreadsDTO> {
-    try{
-        const response = await fetch(`${THREADS_REQUEST}/${topicsName}`, {
+    //try{
+        const route = percentEncoding(THREADS_REQUEST, topicsName)
+        const response = await fetch(route, {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -12,14 +15,14 @@ async function getThreads(topicsName: string): Promise<GetThreadsDTO> {
             },
         })
 
-        if(response.status === HTTP_CODES.OK)
-            return await response.json();
+        return exceptionHandler(response, route, 'GET');
 
-    } catch(e){
+
+    /*} catch(e){
         console.error(e);
         console.warn('Error with gettin topics threads');
     }
-    throw new Error('IDK THO');
+    throw new Error('IDK THO');*/
 }
 
 export default getThreads;

@@ -9,6 +9,13 @@ public final class CustomExceptions
         }
     }
 
+    public static final class TopicsNotFound extends RuntimeException{
+        private static final String message = "Topic not found";
+        public TopicsNotFound(final String credentials){
+            super(String.format("{}, credentials {}",message, credentials));
+        }
+    }
+
     public static final class UserProfileNotFound extends RuntimeException{
         private static final String message = "User is not found";
         public UserProfileNotFound(final String credentials){

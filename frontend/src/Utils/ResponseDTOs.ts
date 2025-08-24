@@ -13,7 +13,8 @@ export type topics =
     | 'INFORMATION' 
     | 'GENERAL';
 
-export type ThreadsInfo = {
+    ////////////////////////////////////
+export type GetThreadInfo = {
     username: string;
     lastOnline: string;
     title: string;
@@ -22,10 +23,11 @@ export type ThreadsInfo = {
     upvoteCount: number;    
 }
 
+///////////////////////////////////////
 export type GetThreadsDTO = {
     topicsName: string,
     description: string,
-    threads: ThreadsInfo[],
+    threads: GetThreadInfo[],
 }
 
 //???????????????????????????????????

@@ -10,7 +10,8 @@ public final class MiddlewareUtils
 
     public static String extractTokenFromCookie(HttpServletRequest request, String cookiesName)
     {
-        if(request.getCookies() == null) return null;
+        if(request.getCookies() == null)
+            return null;
 
         for(Cookie c:  request.getCookies())
         {

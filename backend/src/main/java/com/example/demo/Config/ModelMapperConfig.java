@@ -1,6 +1,9 @@
 package com.example.demo.Config;
 
 import com.example.demo.DTOs.*;
+import com.example.demo.DTOs.Response.GetCommentsDTO;
+import com.example.demo.DTOs.Response.GetThreadDTO;
+import com.example.demo.DTOs.Response.GetTopicsDTO;
 import com.example.demo.Entities.Comment;
 import com.example.demo.Entities.Thread;
 import com.example.demo.Entities.Topics;
@@ -36,13 +39,13 @@ public class ModelMapperConfig
                 .addMapping(tp -> tp.getPostCount(), GetTopicsDTO::setPostCount)
                 .addMapping(tp -> tp.getTopicType(), GetTopicsDTO::setTopicType);
 
-        modelMapper.createTypeMap(Thread.class, ThreadsDTO.class)
-                .addMapping(th -> th.getUserProfile().getUsername(), ThreadsDTO::setUsername)
-                .addMapping(th -> th.getUserProfile().getLastOnline(), ThreadsDTO::setLastOnline)
-                .addMapping(th -> th.getTitle(), ThreadsDTO::setTitle)
-                .addMapping(th -> th.getDateOfCreation(), ThreadsDTO::setDateOfCreation)
-                .addMapping(th -> th.getCommentCount(), ThreadsDTO::setCommentCount)
-                .addMapping(th -> th.getUpvoteCount(), ThreadsDTO::setUpvoteCount);
+        modelMapper.createTypeMap(Thread.class, GetThreadDTO.class)
+                .addMapping(th -> th.getUserProfile().getUsername(), GetThreadDTO::setUsername)
+                .addMapping(th -> th.getUserProfile().getLastOnline(), GetThreadDTO::setLastOnline)
+                .addMapping(th -> th.getTitle(), GetThreadDTO::setTitle)
+                .addMapping(th -> th.getDateOfCreation(), GetThreadDTO::setDateOfCreation)
+                .addMapping(th -> th.getCommentCount(), GetThreadDTO::setCommentCount)
+                .addMapping(th -> th.getUpvoteCount(), GetThreadDTO::setUpvoteCount);
 
         modelMapper.createTypeMap(Comment.class, GetCommentsDTO.class)
                 .addMapping(t -> t.getCommentatorProfile().getUsername(), GetCommentsDTO::setUsername)

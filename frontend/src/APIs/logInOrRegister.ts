@@ -1,9 +1,9 @@
-import { REGISTER_REQUEST, HTTP_CODES } from "./const";
-import { UnauthorizedError } from "../Errors/CustomError";
+import { REGISTER_REQUEST } from "./const";
+import exceptionHandler from "../Errors/exceptionHandler";
 import { type CreateUserCookiesDTO } from "../Utils/RequestDTOs";
 
 async function logInOrRegister(credentials: CreateUserCookiesDTO){
-    try{
+    //try{
         const response = await fetch(REGISTER_REQUEST, {
             method: 'POST',
             headers: {
@@ -13,19 +13,12 @@ async function logInOrRegister(credentials: CreateUserCookiesDTO){
             credentials: 'include'
         })
 
-        console.warn(response);
-
-        switch(response.status){
-            case HTTP_CODES.OK:
-                return await response.json();
-            case HTTP_CODES.UNAUTHORIZED:
-                throw new UnauthorizedError(REGISTER_REQUEST, "API call getting session and persistent cookies.");
-        }
-    } catch (e){
+        return exceptionHandler(response, REGISTER_REQUEST, 'POST');
+    /*} catch (e){
         console.error(e);
         console.warn('Error is getting users info')
     }
-    throw new Error('Failed to fecth for authentication');
+    throw new Error('Failed to fecth for authentication');*/
 }
 
 export default logInOrRegister;

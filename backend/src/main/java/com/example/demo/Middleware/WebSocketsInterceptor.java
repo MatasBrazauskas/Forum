@@ -47,7 +47,7 @@ public class WebSocketsInterceptor implements ChannelInterceptor
                 log.warn("This is user :{}", user.getUsername());
 
                 Authentication auth = new UsernamePasswordAuthenticationToken(
-                        user, null, List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().toString().toUpperCase()))
+                        user.getEmail(), null, List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().toString().toUpperCase()))
                 );
 
                 accessor.setUser(auth);

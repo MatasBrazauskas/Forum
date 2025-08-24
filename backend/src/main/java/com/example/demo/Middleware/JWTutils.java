@@ -6,6 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import java.security.Key;
 import java.util.*;
 import java.util.function.Function;
 
+@Slf4j
 @Component
 @NoArgsConstructor
 public class JWTutils {
@@ -21,15 +23,18 @@ public class JWTutils {
     private String SECRET_KEY;
 
     public String extractRole(String token) {
-        return extractClaim(token.substring(7), claims -> claims.get("role").toString());
+        return extractClaim(token, claims -> claims.get("role").toString());
     }
 
     public String extractUUID(String token) {
-        return extractClaim(token.substring(7), claims -> claims.get("uuid").toString());
+        return extractClaim(token, claims -> claims.get("uuid").toString());
     }
 
     public String extractEmail(String token) {
-        return extractClaim(token.substring(7), claims -> claims.get("email").toString());
+        log.warn(token);
+        log.info(token.substring(7));
+        log.warn(token.substring(8));
+        return extractClaim(token, claims -> claims.get("email").toString());
     }
 
     public Boolean validateToken(String token) {
@@ -65,7 +70,7 @@ public class JWTutils {
     }
 
     private String createToken(Map<String, String> claims, long expiration) {
-        return "Bearer " + Jwts.builder()
+        return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))

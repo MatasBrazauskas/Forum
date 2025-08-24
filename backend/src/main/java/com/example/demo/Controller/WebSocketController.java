@@ -1,6 +1,6 @@
 package com.example.demo.Controller;
 
-import com.example.demo.DTOs.AddCommentDTO;
+import com.example.demo.DTOs.Request.AddCommentDTO;
 import com.example.demo.Entities.Comment;
 import com.example.demo.Exceptions.CustomExceptions;
 import com.example.demo.Repository.CommentRepository;
@@ -10,8 +10,6 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;

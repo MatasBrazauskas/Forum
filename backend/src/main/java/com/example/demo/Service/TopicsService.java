@@ -1,11 +1,10 @@
 package com.example.demo.Service;
 
-import com.example.demo.DTOs.AddTopicsDTO;
-import com.example.demo.DTOs.GetTopicsDTO;
+import com.example.demo.DTOs.Request.AddTopicsDTO;
+import com.example.demo.DTOs.Response.GetTopicsDTO;
 import com.example.demo.Entities.Topics;
 import com.example.demo.Exceptions.CustomExceptions;
 import com.example.demo.Repository.TopicsRepository;
-import com.example.demo.Repository.UserProfileRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -15,21 +14,20 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @Slf4j
 public class TopicsService
 {
-    private final TopicsRepository topicsRepo;
-    private final UserProfileRepository userProfileRepo;
     private final ModelMapper mapper;
+    private final TopicsRepository topicsRepo;
+    private final UserProfileService userProfileService;
 
-    public TopicsService(TopicsRepository topicsRepository, ModelMapper modelMapper, UserProfileRepository userProfileRepository) {
+    public TopicsService(TopicsRepository topicsRepository, ModelMapper modelMapper, UserProfileService userProfileService) {
         this.topicsRepo = topicsRepository;
         this.mapper = modelMapper;
-        this.userProfileRepo = userProfileRepository;
+        this.userProfileService =  userProfileService;
     }
 
     public ResponseEntity<List<GetTopicsDTO>> getTopics() {
@@ -43,12 +41,12 @@ public class TopicsService
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         final var email = authentication.getPrincipal().toString();
 
-        var profile = userProfileRepo.findByEmail(email).orElseThrow(() -> new CustomExceptions.UserProfileNotFound(email));
+        var profile = userProfileService.getUser(email);
 
         var newTopic = new Topics();
         newTopic.setCreator(profile);
         newTopic.setTopicsName(addTopicsInfo.getTopicsName());
-        newTopic.setCreated(LocalDateTime.now());
+        newTopic.setCreated(LocalDate.now());
         newTopic.setDescription(addTopicsInfo.getDescription());
         newTopic.setThreadCount(0);
         newTopic.setPostCount(0);
@@ -57,8 +55,24 @@ public class TopicsService
         profile.setLastOnline(LocalDate.now());
 
         topicsRepo.save(newTopic);
-        userProfileRepo.save(profile);
+        userProfileService.saveUser(profile);
 
         return ResponseEntity.ok().build();
+    }
+
+    public void incrementThreads(final String topicsName){
+        var topics = topicsRepo.findByTopicsName(topicsName).orElseThrow(() -> new CustomExceptions.TopicsNotFound(topicsName));
+        topics.setThreadCount(topics.getThreadCount() + 1);
+        topicsRepo.save(topics);
+    }
+
+    public void incrementPosts(final String topicsName){
+        var topics = topicsRepo.findByTopicsName(topicsName).orElseThrow(() -> new CustomExceptions.TopicsNotFound(topicsName));
+        topics.setPostCount(topics.getThreadCount() + 1);
+        topicsRepo.save(topics);
+    }
+
+    public Topics getTopics(String topicsName){
+        return topicsRepo.findByTopicsName(topicsName).orElseThrow(() -> new CustomExceptions.TopicsNotFound(topicsName));
     }
 }

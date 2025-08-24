@@ -1,7 +1,7 @@
 package com.example.demo.Service;
 
 import com.example.demo.DTOs.ProfileInfoDTO;
-import com.example.demo.DTOs.CreateUserCookiesDTO;
+import com.example.demo.DTOs.Request.CreateUserCookiesDTO;
 import com.example.demo.Entities.UserProfile;
 import com.example.demo.Exceptions.CustomExceptions;
 import com.example.demo.Middleware.CookieFactory;
@@ -14,28 +14,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 @Service
 public class CookieService
 {
     private final UserProfileRepository userProfileRepo;
     private final CookieFactory cookieFactory;
-    private final JWTutils jWTutils;
     private final ModelMapper mapper;
 
-    public CookieService(UserProfileRepository userProfileRepository, CookieFactory cookieFactory, JWTutils jWTutils, ModelMapper modelMapper)
+    public CookieService(UserProfileRepository userProfileRepository, CookieFactory cookieFactory, ModelMapper modelMapper)
     {
         this.userProfileRepo = userProfileRepository;
         this.cookieFactory = cookieFactory;
-        this.jWTutils = jWTutils;
         this.mapper = modelMapper;
     }
 
     @Transactional
     public ResponseEntity<ProfileInfoDTO> registerUser(HttpServletResponse response, CreateUserCookiesDTO createUserCookiesDTO)
     {
-        var user = userProfileRepo.findByEmail(createUserCookiesDTO.getEmail()).orElseThrow(() -> new CustomExceptions.UserProfileNotFound("Email not found"));
+        var user = userProfileRepo.findByEmail(createUserCookiesDTO.getEmail()).orElseThrow(() -> new CustomExceptions.UserProfileNotFound(createUserCookiesDTO.getEmail()));
 
         if(user == null)
         {

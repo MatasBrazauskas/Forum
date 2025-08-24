@@ -4,6 +4,7 @@ import addNewTopic from "../APIs/addNewTopic";
 import { queryClient } from "../main";
 import { type AddTopicsDTO } from "../Utils/RequestDTOs";
 import { TOPICS_ARRAY_QUERY_KEY } from "../Utils/queryConsts";
+import { TOPICS_NAME_LENGTH, TOPICS_DESCRIPTION_LENGTH } from "../Utils/inputLengths";
 
 import './DropDownStyle.css';
 
@@ -32,11 +33,11 @@ function AddTopicComponent(){
 
     return (
         <div>
-            <div className='dropDown' onClick={() => switchState()}>Add New Topic</div>
+            <div onClick={() => switchState()} className='dropDown'>Add New Topic</div>
             {open && 
             <form onSubmit={(e) => handleSubmit(e)} className='addTopic' >
-                <input type='text' ref={topicsName} placeholder="Enter new topics name" className='w-90'/>
-                <input type='text' ref={description} placeholder="Enter new topics description" className='w-90'/>
+                <input type='text' maxLength={TOPICS_NAME_LENGTH} ref={topicsName} placeholder="Enter new topics name" className='w-90'/>
+                <input type='text' maxLength={TOPICS_DESCRIPTION_LENGTH} ref={description} placeholder="Enter new topics description" className='w-90'/>
                 <select ref={topicsType}>
                     <option value="INFORMATION">INFORMATION</option>
                     <option value="GENERAL">GENERAL</option>

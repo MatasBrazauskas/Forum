@@ -1,10 +1,14 @@
 package com.example.demo.Controller;
 
-import com.example.demo.DTOs.AddThreadDTO;
-import com.example.demo.DTOs.GetThreadsDTO;
+import com.example.demo.DTOs.Request.AddThreadDTO;
+import com.example.demo.DTOs.Response.GetThreadsDTO;
 import com.example.demo.Service.ThreadsService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,21 +25,19 @@ public class ThreadsController
         this.threadsService = threadsService;
     }
 
-    @Transactional
     @GetMapping("/{topicsName}")
-    public ResponseEntity<GetThreadsDTO> getTopicsThreads(@PathVariable("topicsName") String topicsName)
+    @Cacheable(value = "threadsCache", key = "#topicsName")
+    public ResponseEntity<GetThreadsDTO> getTopicsThreads(@PathVariable("topicsName") @NotEmpty String topicsName)
     {
-        log.info("Getting threads for topic {}", topicsName);
-        var threadInfo = threadsService.getThreadsInfo(topicsName);
-        return ResponseEntity.ok(threadInfo);
+        log.info("Getting threads for topic %s", topicsName);
+        return threadsService.getThreadsInfo(topicsName);
     }
 
-    @Transactional
     @PostMapping("/{topicsName}")
-    public ResponseEntity<?> addNewThread(@RequestBody AddThreadDTO addThreadDTO)
+    @CacheEvict(value = "threadsCache", key = "#addThreadDTO.title")
+    public ResponseEntity<Void> addNewThread(@RequestBody @Valid AddThreadDTO addThreadDTO)
     {
-        log.info("Adding threads for topic {}", addThreadDTO.getTopicsName());
-        threadsService.addNewThread(addThreadDTO);
-        return ResponseEntity.ok().build();
+        log.info("Adding threads for topic %s", addThreadDTO.getTopicsName());
+        return threadsService.addNewThread(addThreadDTO);
     }
 }

@@ -1,7 +1,7 @@
 package com.example.demo.Controller;
 
-import com.example.demo.DTOs.GetCommentsDTO;
-import com.example.demo.DTOs.GetPostDTO;
+import com.example.demo.DTOs.Response.GetCommentsDTO;
+import com.example.demo.DTOs.Response.GetPostDTO;
 import com.example.demo.Repository.CommentRepository;
 import com.example.demo.Repository.ThreadsRepository;
 import com.example.demo.Repository.UserProfileRepository;

@@ -1,6 +1,5 @@
-package com.example.demo.DTOs;
+package com.example.demo.DTOs.Request;
 
-import com.example.demo.Entities.Comment;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

@@ -1,7 +1,7 @@
 package com.example.demo.Controller;
 
 import com.example.demo.DTOs.ProfileInfoDTO;
-import com.example.demo.DTOs.CreateUserCookiesDTO;
+import com.example.demo.DTOs.Request.CreateUserCookiesDTO;
 import com.example.demo.Service.CookieService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -22,7 +22,7 @@ public class CookieController
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ProfileInfoDTO> register(HttpServletResponse response, @Valid @RequestBody CreateUserCookiesDTO createUserCookiesDTO)
+    public ResponseEntity<ProfileInfoDTO> register(HttpServletResponse response, @RequestBody @Valid CreateUserCookiesDTO createUserCookiesDTO)
     {
         log.info("Logging/registering a user");
         return cookieService.registerUser(response, createUserCookiesDTO);

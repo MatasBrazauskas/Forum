@@ -4,11 +4,11 @@ import { queryClient } from "../main";
 import '../Forum/DropDownStyle.css';
 import { type AddThreadDTO } from "../Utils/RequestDTOs";
 import addNewThread from "../APIs/addNewThread";
+import { THREADS_QUERY_KEY, TOPICS_ARRAY_QUERY_KEY } from "../Utils/queryConsts";
+import { THREADS_TITLE_LENGTH, THREADS_CONTENT_LENGTH } from "../Utils/inputLengths";
 
 function AddNewTheadComponent({topicsName}: {topicsName: string}){
-    const [open, switchStates] = useReducer((state: boolean) => {
-        return !state;
-    }, false);
+    const [open, switchStates] = useReducer((state: boolean) => {return !state;}, false);
 
     const title = useRef<HTMLInputElement>(null);
     const content = useRef<HTMLInputElement>(null);
@@ -23,7 +23,7 @@ function AddNewTheadComponent({topicsName}: {topicsName: string}){
         }
 
         addNewThread(data);
-        queryClient.invalidateQueries({ queryKey: ['threads']});
+        queryClient.invalidateQueries({ queryKey: [THREADS_QUERY_KEY, TOPICS_ARRAY_QUERY_KEY]});
     }
 
     return (
@@ -31,8 +31,8 @@ function AddNewTheadComponent({topicsName}: {topicsName: string}){
             <div onClick={() => switchStates()} className='dropDown'>Add New Thread</div>
 
             {open && <form onSubmit={(e) => handleSubmit(e)}>
-                <input type='text' ref={title} placeholder="Enter Threads Title"/>
-                <input type='text' ref={content} placeholder="Enter Content"/>
+                <input type='text'maxLength={THREADS_TITLE_LENGTH} ref={title} placeholder="Enter Threads Title"/>
+                <input type='text'maxLength={THREADS_CONTENT_LENGTH} ref={content} placeholder="Enter Content"/>
                 <button type='submit'>Post</button>
             </form>}
         </div>

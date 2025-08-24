@@ -24,7 +24,7 @@ export const percentEncoding = (url: string, ...queries: string[]) => {
     let addedUrl = url;
 
     for(let i = 0; i < queries.length; i++){
-        addedUrl += queries[i];
+        addedUrl += `/${queries[i]}`;
     }
     return addedUrl;
 }

@@ -35,6 +35,9 @@ public class SessionManagementFilter extends OncePerRequestFilter
         final String sessionJWT = MiddlewareUtils.extractTokenFromCookie(request, MiddlewareUtils.sessionCookieName);
         final String persistentJWT = MiddlewareUtils.extractTokenFromCookie(request, MiddlewareUtils.persistentCookieName);
 
+        log.info("Session JWT : %s", sessionJWT);
+        log.info("Persistent JWT : $s", persistentJWT);
+
         request.setAttribute(MiddlewareUtils.sessionCookieName, sessionJWT);
         request.setAttribute(MiddlewareUtils.persistentCookieName, persistentJWT);
 

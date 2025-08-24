@@ -1,8 +1,9 @@
 package com.example.demo.Controller;
 
-import com.example.demo.DTOs.AddTopicsDTO;
-import com.example.demo.DTOs.GetTopicsDTO;
+import com.example.demo.DTOs.Request.AddTopicsDTO;
+import com.example.demo.DTOs.Response.GetTopicsDTO;
 import com.example.demo.Service.TopicsService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -35,7 +36,7 @@ public class TopicController
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     @CacheEvict(value = "topicsCache", key="'allTopics'")
-    public ResponseEntity<Void> addNewTopic(@RequestBody AddTopicsDTO addTopicsInfo)
+    public ResponseEntity<Void> addNewTopic(@RequestBody @Valid AddTopicsDTO addTopicsInfo)
     {
         log.info("Adding new topic");
         return topicsService.addNewTopic(addTopicsInfo);
