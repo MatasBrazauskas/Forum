@@ -3,3 +3,5 @@ export const TOPICS_DESCRIPTION_LENGTH = 128;
 
 export const THREADS_TITLE_LENGTH = 64;
 export const THREADS_CONTENT_LENGTH = 256;
+
+export const COMMENTS_LENGTH = 256;

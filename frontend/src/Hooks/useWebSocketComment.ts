@@ -2,11 +2,10 @@ import { useState, useRef, useEffect } from 'react';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client/dist/sockjs';
 
-import { type AddCommentDTO } from '../APIs/const';
+import { type AddCommentDTO } from '../Utils/RequestDTOs';
 
 export function useWebSocketComment() {
-    const [comments, setComment] = useState<string[]>([]);
-    const [typing, setTyping] = useState<string[]>([]);
+    const [typing, setTyping] = useState<string>('');
 
     const stompClientRef = useRef<Client>(null);
     const typingTimeoutRef = useRef<any>(null);
@@ -24,19 +23,17 @@ export function useWebSocketComment() {
         });
 
         client.onConnect = () => {
-            console.log('Connected to WebSocket!');
-            client.subscribe('/topic/comments', (message) => {
-                setComment(prev => [...prev, message.body]);
-            });
+            client.subscribe('/topic/comments', () => {});
 
             client.subscribe('/topic/typing', (message) => {
-                setTyping(_ => [message.body]); 
+                setTyping(message?.body);
+
                 if (typingTimeoutRef.current) {
                     clearTimeout(typingTimeoutRef.current);
                 }
                 typingTimeoutRef.current = setTimeout(() => {
-                    setTyping([]);
-                }, 3000);
+                setTyping('');
+            }, 3000);
             });
         };
 
@@ -59,7 +56,6 @@ export function useWebSocketComment() {
     function sendComment(obj: AddCommentDTO) {
         console.warn('Clicked')
         if (stompClientRef.current && stompClientRef.current.connected) {
-            console.log("Connected?", stompClientRef.current?.connected)
             stompClientRef.current.publish({
                 destination: "/app/comment",
                 body: JSON.stringify(obj),
@@ -72,10 +68,13 @@ export function useWebSocketComment() {
             stompClientRef.current.publish({
                 destination: "/app/typing",
                 body: username,
-                headers: { Authorization: "matasbrazauskas123456@gmail.com" },
+                headers: { 
+                    "content-type": "text/plain", 
+                    Authorization: "matasbrazauskas123456@gmail.com" 
+                },
             });
         }
     }
 
-    return { comments, typing, sendComment, sendTyping };
+    return { typing, sendComment, sendTyping };
 }

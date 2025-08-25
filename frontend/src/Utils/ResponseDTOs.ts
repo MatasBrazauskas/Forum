@@ -43,6 +43,7 @@ export type GetCommentDTO = {
 
     dateOfCreation: string;
     comment: string;
+    commentId: number;
 
     reply: string;
     replyId: number;
@@ -59,6 +60,15 @@ export type GetCommentsDTO = {
     comments: GetCommentDTO[];
 }
 
-export type ErrorInformationDTO = {
-    
+export const TypeConverter = (obj: GetCommentsDTO): GetCommentDTO => {
+    const transformedData: GetCommentDTO = {
+        partialProfile: obj.partialProfile,
+        dateOfCreation: obj.contentDateOfCreation,
+        comment: obj.content,
+        commentId: -1,
+        reply: '',
+        replyId: -1,
+    }
+
+    return transformedData;
 }

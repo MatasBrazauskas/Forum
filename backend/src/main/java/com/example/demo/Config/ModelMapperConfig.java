@@ -55,14 +55,13 @@ public class ModelMapperConfig
                 .addMapping(user -> user.getReputation(), PartialProfileInfoDTO::setReputation);
 
 
-        /*modelMapper.createTypeMap(Comment.class, GetCommentDTO.class)
-                .addMapping(t -> t.getCommentatorProfile().getUsername(), GetCommentDTO::setUsername)
+        modelMapper.createTypeMap(Comment.class, GetCommentDTO.class)
+                .addMapping(t -> t.getCommentatorProfile(), GetCommentDTO::setPartialProfile)
                 .addMapping(t -> t.getDateOfComment(), GetCommentDTO::setDateOfCreation)
-                .addMapping(t -> t.getReply(), GetCommentDTO::setReply)
-                .addMapping(t -> t.getThread().getUserProfile().getPostCount(), GetCommentDTO::setPostCount)
-                .addMapping(t -> t.getThread().getUserProfile().getReputation(), GetCommentDTO::setReputation)
                 .addMapping(t -> t.getComment(), GetCommentDTO::setComment)
-                .addMapping(t -> t.getId(), GetCommentDTO::setReplyId);*/
+                .addMapping(t -> t.getId(), GetCommentDTO::setCommentId)
+                .addMapping(t -> t.getReply(), GetCommentDTO::setReply)
+                .addMapping(t -> t.getReplyId(), GetCommentDTO::setReplyId);
 
 
 

@@ -31,6 +31,13 @@ public class Comment
     @Column(nullable = false, name = "comment", columnDefinition = "VARCHAR(256)")
     private String comment;
 
+    public Long getReplyId(){
+        if(reply!=null){
+            return reply.getId();
+        }
+        return null;
+    }
+
     @Column(nullable = false, name = "date_of_comment")
     private LocalDate dateOfComment;
 }

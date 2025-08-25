@@ -54,7 +54,7 @@ public class CommentService
 
     @CacheEvict(value = "commentCache", key = "#addCommentDTO.threadName")
     @Transactional
-    public Comment addComment(AddCommentDTO addCommentDTO, Principal principal) {
+    public String addComment(AddCommentDTO addCommentDTO, Principal principal) {
         final var email = principal.getName();
 
         log.warn("This is users email: {}", email);
@@ -72,6 +72,7 @@ public class CommentService
         com.setDateOfComment(LocalDate.now());
 
         commentRepo.save(com);
-        return com;
+
+        return "Everything is good";
     }
 }

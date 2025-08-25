@@ -1,0 +1,45 @@
+.commentPage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 1200px; /* or use a max-width and center */
+    max-width: 100%; /* Make it responsive */
+    margin: 0 auto; /* Center the container */
+    gap: 10px;
+}
+
+.commentTile {
+    display: flex;
+    width: 100%;
+}
+
+.profile {
+    background-color: rgb(48, 48, 48);
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    flex-shrink: 0; /* Prevents the profile from shrinking */
+    gap: 10px;
+    padding: 10px;
+}
+
+.text {
+    flex-grow: 1; /* Allows it to take up the remaining space */
+    width: auto; /* Not needed, but good practice */
+    /* overflow-wrap is sufficient for long words, so no change */
+    overflow-wrap: break-word;
+}
+
+.top {
+    background-color: rgb(58, 58, 58);
+    padding: 10px;
+}
+
+.bottom {
+    background-color: rgb(100, 100, 100);
+    /* Remove fixed height to allow content to grow */
+    height: auto;
+    min-height: 150px; /* Optional: to ensure a minimum height */
+    padding: 10px;
+}

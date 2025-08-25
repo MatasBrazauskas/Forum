@@ -2,9 +2,13 @@ package com.example.demo.Config;
 
 import com.example.demo.Middleware.WebSocketsInterceptor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.converter.MessageConverter;
+import org.springframework.messaging.converter.StringMessageConverter;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.*;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -31,5 +35,13 @@ public class WebSocketsConfig implements WebSocketMessageBrokerConfigurer {
     public void configureClientInboundChannel(ChannelRegistration registration) {
         registration.interceptors(webSocketsInter);
     }
+
+    @Override
+    public boolean configureMessageConverters(List<MessageConverter> messageConverters) {
+        // Add a StringMessageConverter to handle plain text messages
+        messageConverters.add(new StringMessageConverter());
+        return true;
+    }
 }
+
 

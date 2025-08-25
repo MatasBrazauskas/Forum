@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-//?????????????????????????????????
 @Data
 @NoArgsConstructor
 public class GetCommentDTO
@@ -14,6 +13,7 @@ public class GetCommentDTO
 
     private LocalDate dateOfCreation;
     private String comment;
+    private Long commentId;
 
     private String reply;
     private Long replyId;
